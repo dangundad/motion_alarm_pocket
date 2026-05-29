@@ -1,0 +1,5 @@
+package com.dangundad.motion_alarm_pocket
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()

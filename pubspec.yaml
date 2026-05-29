@@ -1,0 +1,36 @@
+name: motion_alarm_pocket
+description: "Motion detection alarm for a phone placed in a pocket or bag."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  get: ^4.7.3
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
+  path_provider: ^2.1.5
+  flutter_screenutil: ^5.9.3
+  flex_color_scheme: ^8.4.0
+  google_fonts: ^8.1.0
+  lucide_icons_flutter: ^3.1.14+2
+  google_mobile_ads: ^8.0.0
+  gma_mediation_applovin: ^2.6.0
+  gma_mediation_pangle: ^3.6.0
+  gma_mediation_unity: ^1.7.0
+  in_app_review: ^2.0.12
+  sensors_plus: ^7.0.0
+  vibration: ^3.1.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
