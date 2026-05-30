@@ -22,14 +22,37 @@ class HomeController extends GetxController {
   AccelerationSample? _lastSample;
   StreamSubscription<AccelerometerEvent>? _subscription;
 
+  static const _kDelay = 'delay_seconds';
+  static const _kSensitivity = 'sensitivity';
+
   @override
   void onInit() {
     super.onInit();
+    _loadSettings();
     history.assignAll(HiveService.to.getHistory());
   }
 
-  void setDelay(double value) => delaySeconds.value = value.round();
-  void setSensitivity(MotionSensitivity value) => sensitivity.value = value;
+  void _loadSettings() {
+    final savedDelay = HiveService.to.getSetting<int>(_kDelay);
+    if (savedDelay != null) delaySeconds.value = savedDelay;
+    final savedSens = HiveService.to.getSetting<String>(_kSensitivity);
+    if (savedSens != null) {
+      sensitivity.value = MotionSensitivity.values.firstWhere(
+        (e) => e.name == savedSens,
+        orElse: () => MotionSensitivity.medium,
+      );
+    }
+  }
+
+  void setDelay(double value) {
+    delaySeconds.value = value.round();
+    HiveService.to.setSetting(_kDelay, delaySeconds.value);
+  }
+
+  void setSensitivity(MotionSensitivity value) {
+    sensitivity.value = value;
+    HiveService.to.setSetting(_kSensitivity, value.name);
+  }
 
   void startSession() {
     if (isSessionActive.value) return;

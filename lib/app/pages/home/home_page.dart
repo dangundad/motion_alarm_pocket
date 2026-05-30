@@ -423,6 +423,19 @@ class _HistoryTile extends StatelessWidget {
   const _HistoryTile({required this.entry});
   final Map<String, dynamic> entry;
 
+  String _formatTime() {
+    final raw = entry['createdAt']?.toString() ?? '';
+    final dt = DateTime.tryParse(raw)?.toLocal();
+    if (dt == null) return '';
+    final now = DateTime.now();
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
+      return '$h:$m';
+    }
+    return '${dt.month}/${dt.day} $h:$m';
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -441,6 +454,12 @@ class _HistoryTile extends StatelessWidget {
         ),
         title: Text(entry['title']?.toString() ?? ''),
         subtitle: Text(entry['detail']?.toString() ?? ''),
+        trailing: Text(
+          _formatTime(),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: cs.onSurfaceVariant,
+              ),
+        ),
         dense: true,
       ),
     );
