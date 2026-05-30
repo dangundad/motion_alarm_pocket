@@ -48,26 +48,10 @@ const _tiers = [
 ];
 
 const _benefits = [
-  (
-    icon: LucideIcons.tvMinimalPlay,
-    titleKey: 'premium_benefit_no_ads',
-    descKey: 'premium_benefit_no_ads_desc'
-  ),
-  (
-    icon: LucideIcons.infinity,
-    titleKey: 'premium_benefit_lifetime',
-    descKey: 'premium_benefit_lifetime_desc'
-  ),
-  (
-    icon: LucideIcons.heart,
-    titleKey: 'premium_benefit_support',
-    descKey: 'premium_benefit_support_desc'
-  ),
-  (
-    icon: LucideIcons.shieldCheck,
-    titleKey: 'premium_benefit_peace',
-    descKey: 'premium_benefit_peace_desc'
-  ),
+  (icon: LucideIcons.tvMinimalPlay, titleKey: 'premium_benefit_no_ads',     descKey: 'premium_benefit_no_ads_desc'),
+  (icon: LucideIcons.infinity,      titleKey: 'premium_benefit_lifetime',   descKey: 'premium_benefit_lifetime_desc'),
+  (icon: LucideIcons.heart,         titleKey: 'premium_benefit_support',    descKey: 'premium_benefit_support_desc'),
+  (icon: LucideIcons.shieldCheck,   titleKey: 'premium_benefit_peace',      descKey: 'premium_benefit_peace_desc'),
 ];
 
 class PremiumPage extends StatefulWidget {
@@ -78,7 +62,7 @@ class PremiumPage extends StatefulWidget {
 }
 
 class _PremiumPageState extends State<PremiumPage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 1; // Medium이 기본 선택 (Popular)
 
   PurchaseService get _svc => PurchaseService.to;
 
@@ -114,25 +98,26 @@ class _PremiumPageState extends State<PremiumPage> {
           children: [
             Expanded(
               child: ListView(
-                padding:
-                    EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 96.h),
+                padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 100.h),
                 children: [
                   _Header(isPremium: isPremium),
                   SizedBox(height: 20.h),
-                  for (int i = 0; i < _tiers.length; i++) ...[
-                    _TierCard(
-                      tier: _tiers[i],
-                      price: _priceFor(_tiers[i]),
-                      selected: _selectedIndex == i,
-                      isPremium: isPremium,
-                      onTap: isPremium
-                          ? null
-                          : () => setState(() => _selectedIndex = i),
-                    ),
-                    SizedBox(height: 10.h),
+                  if (!isPremium) ...[
+                    for (int i = 0; i < _tiers.length; i++) ...[
+                      _TierCard(
+                        tier: _tiers[i],
+                        price: _priceFor(_tiers[i]),
+                        selected: _selectedIndex == i,
+                        onTap: () => setState(() => _selectedIndex = i),
+                      ),
+                      SizedBox(height: 10.h),
+                    ],
+                    SizedBox(height: 8.h),
+                  ] else ...[
+                    _PremiumUnlockedCard(),
+                    SizedBox(height: 8.h),
                   ],
-                  SizedBox(height: 16.h),
-                  _BenefitsGrid(),
+                  _BenefitsList(),
                   SizedBox(height: 16.h),
                   if (!isPremium)
                     Center(
@@ -159,6 +144,7 @@ class _PremiumPageState extends State<PremiumPage> {
   }
 }
 
+// ── 헤더 ──────────────────────────────────────────────────────────────
 class _Header extends StatelessWidget {
   const _Header({required this.isPremium});
   final bool isPremium;
@@ -177,7 +163,7 @@ class _Header extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: cs.primary.withAlpha(60),
-                blurRadius: 20,
+                blurRadius: 24,
                 spreadRadius: 2,
               ),
             ],
@@ -206,30 +192,101 @@ class _Header extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
+        if (!isPremium) ...[
+          SizedBox(height: 10.h),
+          // 일회성 구매 강조 뱃지
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
+            decoration: BoxDecoration(
+              color: cs.secondaryContainer,
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(LucideIcons.check, size: 13.r, color: cs.onSecondaryContainer),
+                SizedBox(width: 4.w),
+                Text(
+                  'premium_one_time_note'.tr,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: cs.onSecondaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ],
     );
   }
 }
 
+// ── 구매 완료 상태 카드 ───────────────────────────────────────────────
+class _PremiumUnlockedCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: cs.tertiaryContainer,
+        border: Border.all(color: cs.tertiary.withAlpha(80)),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.shieldCheck, size: 32.r, color: cs.onTertiaryContainer),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'premium_unlocked'.tr,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: cs.onTertiaryContainer,
+                      ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  'premium_one_time_note'.tr,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: cs.onTertiaryContainer.withAlpha(180),
+                      ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── 티어 카드 ─────────────────────────────────────────────────────────
 class _TierCard extends StatelessWidget {
   const _TierCard({
     required this.tier,
     required this.price,
     required this.selected,
-    required this.isPremium,
     required this.onTap,
   });
 
   final _TierMeta tier;
   final String price;
   final bool selected;
-  final bool isPremium;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 180),
@@ -240,20 +297,21 @@ class _TierCard extends StatelessWidget {
                 : cs.surfaceContainerLow,
             border: Border.all(
               color: selected ? cs.primary : cs.outlineVariant,
-              width: selected ? 1.6 : 1.0,
+              width: selected ? 2.0 : 1.0,
             ),
           ),
           child: InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(16.r),
             child: Padding(
-              padding: EdgeInsets.all(16.r),
+              padding: EdgeInsets.fromLTRB(16.r, 16.r, 16.r, 16.r),
               child: Row(
                 children: [
+                  // 선택 인디케이터
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
-                    width: 32.r,
-                    height: 32.r,
+                    width: 36.r,
+                    height: 36.r,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: selected
@@ -262,10 +320,8 @@ class _TierCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: selected
-                          ? Icon(LucideIcons.check,
-                              size: 18.r, color: cs.onPrimary)
-                          : Text(tier.emoji,
-                              style: TextStyle(fontSize: 16.sp)),
+                          ? Icon(LucideIcons.check, size: 20.r, color: cs.onPrimary)
+                          : Text(tier.emoji, style: TextStyle(fontSize: 18.sp)),
                     ),
                   ),
                   SizedBox(width: 14.w),
@@ -275,51 +331,58 @@ class _TierCard extends StatelessWidget {
                       children: [
                         Text(
                           tier.titleKey.tr,
-                          style: Theme.of(context).textTheme.titleSmall,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                              ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           tier.descKey.tr,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: cs.onSurfaceVariant,
-                                  ),
-                          maxLines: 2,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: cs.onSurfaceVariant,
+                              ),
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(width: 8.w),
                   Text(
-                    isPremium ? '✓' : price,
-                    style:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: cs.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    price,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: selected ? cs.primary : cs.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
             ),
           ),
         ),
+        // Popular 뱃지 — tertiary 색상 (긍정적)
         if (tier.popular)
           Positioned(
-            top: -1,
-            right: 12.w,
+            top: -10.h,
+            right: 14.w,
             child: Container(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
               decoration: BoxDecoration(
-                color: cs.error,
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(8.r)),
+                color: cs.tertiary,
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: cs.tertiary.withAlpha(80),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Text(
                 'popular'.tr,
                 style: TextStyle(
-                  color: cs.onError,
+                  color: cs.onTertiary,
                   fontSize: 11.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -331,54 +394,96 @@ class _TierCard extends StatelessWidget {
   }
 }
 
-class _BenefitsGrid extends StatelessWidget {
+// ── 혜택 리스트 (그리드 대신 리스트) ─────────────────────────────────
+class _BenefitsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    return GridView.count(
-      crossAxisCount: 2,
-      crossAxisSpacing: 10.w,
-      mainAxisSpacing: 10.h,
-      childAspectRatio: 1.6,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: _benefits
-          .map(
-            (b) => Container(
-              padding: EdgeInsets.all(14.r),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.r),
-                color: cs.surfaceContainerLow,
-                border: Border.all(color: cs.outlineVariant),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'premium_benefits_title'.tr,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: cs.onSurfaceVariant,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(b.icon, size: 22.r, color: cs.primary),
-                  SizedBox(height: 6.h),
-                  Text(
-                    b.titleKey.tr,
-                    style: Theme.of(context).textTheme.labelLarge,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: 10.h),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            color: cs.surfaceContainerLow,
+            border: Border.all(color: cs.outlineVariant),
+          ),
+          child: Column(
+            children: [
+              for (int i = 0; i < _benefits.length; i++) ...[
+                _BenefitRow(benefit: _benefits[i]),
+                if (i < _benefits.length - 1)
+                  Divider(
+                    height: 1,
+                    indent: 54.w,
+                    color: cs.outlineVariant.withAlpha(120),
                   ),
-                  Text(
-                    b.descKey.tr,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: cs.onSurfaceVariant,
-                        ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          )
-          .toList(),
+              ],
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
 
+class _BenefitRow extends StatelessWidget {
+  const _BenefitRow({required this.benefit});
+  final ({IconData icon, String titleKey, String descKey}) benefit;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      child: Row(
+        children: [
+          Container(
+            width: 36.r,
+            height: 36.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: cs.primaryContainer,
+            ),
+            child: Icon(benefit.icon, size: 18.r, color: cs.onPrimaryContainer),
+          ),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  benefit.titleKey.tr,
+                  style: Theme.of(context).textTheme.labelLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  benefit.descKey.tr,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: cs.onSurfaceVariant,
+                      ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          Icon(LucideIcons.check, size: 16.r, color: cs.primary),
+        ],
+      ),
+    );
+  }
+}
+
+// ── 하단 구매 버튼 ────────────────────────────────────────────────────
 class _BottomPurchaseBar extends StatelessWidget {
   const _BottomPurchaseBar({
     required this.isPremium,
@@ -402,7 +507,7 @@ class _BottomPurchaseBar extends StatelessWidget {
       content = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(LucideIcons.check, size: 20.r),
+          Icon(LucideIcons.shieldCheck, size: 20.r),
           SizedBox(width: 8.w),
           Flexible(
             child: Text(
@@ -453,16 +558,32 @@ class _BottomPurchaseBar extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 12.h),
-        child: FilledButton(
-          onPressed: canBuy ? onTap : null,
-          style: FilledButton.styleFrom(
-            minimumSize: Size(double.infinity, 56.h),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r)),
-            backgroundColor: isPremium ? cs.tertiary : null,
-          ),
-          child: content,
+        padding: EdgeInsets.fromLTRB(20.w, 6.h, 20.w, 12.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FilledButton(
+              onPressed: canBuy ? onTap : null,
+              style: FilledButton.styleFrom(
+                minimumSize: Size(double.infinity, 56.h),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r)),
+                backgroundColor: isPremium ? cs.tertiary : null,
+              ),
+              child: content,
+            ),
+            // 일회성 구매 명시 — 구독 아님
+            if (!isPremium) ...[
+              SizedBox(height: 6.h),
+              Text(
+                'premium_one_time_note'.tr,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ],
         ),
       ),
     );

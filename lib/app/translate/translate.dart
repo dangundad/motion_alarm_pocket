@@ -66,6 +66,8 @@ class AppTranslations extends Translations {
           'premium_benefit_peace': 'Peace of Mind',
           'premium_benefit_peace_desc': 'Focus on what matters',
           'remove_ads_cta': 'Remove ads · Support developer',
+          'premium_one_time_note': 'One-time purchase · No subscription',
+          'premium_benefits_title': 'What you get',
         },
         'ko_KR': {
           'app_title': 'Motion Alarm Pocket',
@@ -129,6 +131,8 @@ class AppTranslations extends Translations {
           'premium_benefit_peace': '안심 사용',
           'premium_benefit_peace_desc': '중요한 것에 집중',
           'remove_ads_cta': '광고 제거 · 개발자 후원',
+          'premium_one_time_note': '일회성 구매 · 구독 없음',
+          'premium_benefits_title': '프리미엄 혜택',
         },
       };
 }
