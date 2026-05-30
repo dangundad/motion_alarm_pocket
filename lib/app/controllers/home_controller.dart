@@ -7,6 +7,7 @@ import '../admob/ads_interstitial.dart';
 import '../domain/motion_alarm_logic.dart';
 import '../services/alert_service.dart';
 import '../services/hive_service.dart';
+import '../services/purchase_service.dart';
 
 class HomeController extends GetxController {
   final isSessionActive = false.obs;
@@ -77,7 +78,14 @@ class HomeController extends GetxController {
   Future<void> stopAlarm() async {
     isAlarmActive.value = false;
     await AlertService.to.stop();
-    await Get.find<InterstitialAdManager>().showAfterNaturalBreak();
+    try {
+      if (!PurchaseService.to.isPremium.value) {
+        await Get.find<InterstitialAdManager>().showAfterNaturalBreak();
+      }
+    } catch (_) {
+      // PurchaseService not available — show ad by default
+      await Get.find<InterstitialAdManager>().showAfterNaturalBreak();
+    }
   }
 
   Future<void> stopSession() async {
