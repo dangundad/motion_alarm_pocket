@@ -69,8 +69,8 @@ class HomeController extends GetxController {
     isAlarmActive.value = true;
     await AlertService.to.start();
     await HiveService.to.addHistory({
-      'title': 'Motion detected',
-      'detail': 'Delta ${delta.toStringAsFixed(1)}',
+      'title': 'motion_detected'.tr,
+      'detail': 'delta_value'.trParams({'n': delta.toStringAsFixed(1)}),
     });
     history.assignAll(HiveService.to.getHistory());
   }
@@ -78,13 +78,19 @@ class HomeController extends GetxController {
   Future<void> stopAlarm() async {
     isAlarmActive.value = false;
     await AlertService.to.stop();
-    try {
-      if (!PurchaseService.to.isPremium.value) {
+    final showAd = _shouldShowAd();
+    if (showAd) {
+      try {
         await Get.find<InterstitialAdManager>().showAfterNaturalBreak();
-      }
+      } catch (_) {}
+    }
+  }
+
+  bool _shouldShowAd() {
+    try {
+      return !PurchaseService.to.isPremium.value;
     } catch (_) {
-      // PurchaseService not available — show ad by default
-      await Get.find<InterstitialAdManager>().showAfterNaturalBreak();
+      return true;
     }
   }
 

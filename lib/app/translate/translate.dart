@@ -30,9 +30,13 @@ class AppTranslations extends Translations {
           'siren_vibration': 'Siren + Vibration',
           // settings labels
           'delay_label': 'Delay: @ns',
+          'sensitivity': 'Sensitivity',
           'sensitivity_low': 'Low',
           'sensitivity_medium': 'Medium',
           'sensitivity_high': 'High',
+          'popular': 'Popular',
+          'motion_detected': 'Motion detected',
+          'delta_value': 'Delta @n',
           // how to use
           'how_to_use': 'How to Use',
           'step_settings': 'Set delay and sensitivity',
@@ -89,9 +93,13 @@ class AppTranslations extends Translations {
           'siren_vibration': '사이렌 + 진동',
           // settings labels
           'delay_label': '딜레이: @n초',
+          'sensitivity': '감도',
           'sensitivity_low': '낮음',
           'sensitivity_medium': '중간',
           'sensitivity_high': '높음',
+          'popular': '인기',
+          'motion_detected': '움직임 감지',
+          'delta_value': '변화량 @n',
           // how to use
           'how_to_use': '사용 방법',
           'step_settings': '딜레이와 감도를 설정하세요',

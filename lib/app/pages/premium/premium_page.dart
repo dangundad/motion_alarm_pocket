@@ -309,7 +309,7 @@ class _TierCard extends StatelessWidget {
                     BorderRadius.vertical(bottom: Radius.circular(8.r)),
               ),
               child: Text(
-                'Popular',
+                'popular'.tr,
                 style: TextStyle(
                   color: cs.onError,
                   fontSize: 11.sp,

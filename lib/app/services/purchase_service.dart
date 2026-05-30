@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,9 +83,9 @@ class PurchaseService extends GetxService {
     }
   }
 
-  void _onPurchaseUpdate(List<PurchaseDetails> purchases) {
+  Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchases) async {
     for (final purchase in purchases) {
-      _handlePurchase(purchase);
+      await _handlePurchase(purchase);
     }
     if (_silentRestore) {
       _restoreCompleter?.complete();
@@ -124,7 +123,7 @@ class PurchaseService extends GetxService {
     isLoading.value = true;
     try {
       await InAppPurchase.instance.buyNonConsumable(purchaseParam: param);
-    } on PlatformException {
+    } catch (_) {
       isLoading.value = false;
     }
   }
