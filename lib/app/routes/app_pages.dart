@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../bindings/app_binding.dart';
 import '../pages/home/home_page.dart';
+import '../pages/premium/premium_page.dart';
 
 part 'app_routes.dart';
 
@@ -11,6 +12,10 @@ abstract final class AppPages {
       name: Routes.home,
       page: () => const HomePage(),
       binding: AppBinding(),
+    ),
+    GetPage(
+      name: Routes.premium,
+      page: () => const PremiumPage(),
     ),
   ];
 }
