@@ -41,6 +41,8 @@ class HiveService extends GetxService {
       });
   }
 
+  static const _maxHistoryEntries = 50;
+
   Future<void> addHistory(Map<String, dynamic> entry) async {
     final id = DateTime.now().microsecondsSinceEpoch.toString();
     await _history.put(id, {
@@ -48,6 +50,10 @@ class HiveService extends GetxService {
       'id': id,
       'createdAt': DateTime.now().toIso8601String(),
     });
+    if (_history.length > _maxHistoryEntries) {
+      final oldest = _history.keys.first;
+      await _history.delete(oldest);
+    }
   }
 
   Future<void> clearHistory() async {

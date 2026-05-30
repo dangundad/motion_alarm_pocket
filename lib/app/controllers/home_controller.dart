@@ -54,6 +54,11 @@ class HomeController extends GetxController {
     HiveService.to.setSetting(_kSensitivity, value.name);
   }
 
+  Future<void> _onSensorError() async {
+    await stopSession();
+    Get.snackbar('sensor_unavailable'.tr, '', duration: const Duration(seconds: 3));
+  }
+
   void startSession() {
     if (isSessionActive.value) return;
     _startedAt = DateTime.now();
@@ -63,7 +68,7 @@ class HomeController extends GetxController {
     isArmed.value = false;
     _subscription = accelerometerEventStream(
       samplingPeriod: const Duration(milliseconds: 80),
-    ).listen(_onSensorData, onError: (_) => stopSession());
+    ).listen(_onSensorData, onError: (_) => _onSensorError());
   }
 
   void _onSensorData(AccelerometerEvent event) {

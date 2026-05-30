@@ -88,13 +88,14 @@ class PurchaseService extends GetxService {
       await _handlePurchase(purchase);
     }
     if (_silentRestore) {
-      _restoreCompleter?.complete();
+      try { _restoreCompleter?.complete(); } catch (_) {}
     }
   }
 
   Future<void> _handlePurchase(PurchaseDetails purchase) async {
     if (purchase.status == PurchaseStatus.purchased ||
         purchase.status == PurchaseStatus.restored) {
+      isLoading.value = false;
       await _savePurchaseStatus(true);
       if (purchase.pendingCompletePurchase) {
         await InAppPurchase.instance.completePurchase(purchase);
