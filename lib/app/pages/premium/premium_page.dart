@@ -193,6 +193,8 @@ class _Header extends StatelessWidget {
           isPremium ? 'premium_unlocked'.tr : 'premium_title'.tr,
           style: Theme.of(context).textTheme.titleLarge,
           textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 6.h),
         Text(
@@ -201,6 +203,8 @@ class _Header extends StatelessWidget {
                 color: cs.onSurfaceVariant,
               ),
           textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -272,6 +276,8 @@ class _TierCard extends StatelessWidget {
                         Text(
                           tier.titleKey.tr,
                           style: Theme.of(context).textTheme.titleSmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           tier.descKey.tr,
@@ -279,6 +285,8 @@ class _TierCard extends StatelessWidget {
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: cs.onSurfaceVariant,
                                   ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -348,8 +356,12 @@ class _BenefitsGrid extends StatelessWidget {
                 children: [
                   Icon(b.icon, size: 22.r, color: cs.primary),
                   SizedBox(height: 6.h),
-                  Text(b.titleKey.tr,
-                      style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    b.titleKey.tr,
+                    style: Theme.of(context).textTheme.labelLarge,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   Text(
                     b.descKey.tr,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -392,7 +404,13 @@ class _BottomPurchaseBar extends StatelessWidget {
         children: [
           Icon(LucideIcons.check, size: 20.r),
           SizedBox(width: 8.w),
-          Text('premium_unlocked'.tr),
+          Flexible(
+            child: Text(
+              'premium_unlocked'.tr,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       );
     } else if (isLoading) {
@@ -405,7 +423,13 @@ class _BottomPurchaseBar extends StatelessWidget {
             child: const CircularProgressIndicator(strokeWidth: 2),
           ),
           SizedBox(width: 8.w),
-          Text('premium_loading'.tr),
+          Flexible(
+            child: Text(
+              'premium_loading'.tr,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       );
     } else {
@@ -414,9 +438,15 @@ class _BottomPurchaseBar extends StatelessWidget {
         children: [
           Icon(LucideIcons.shoppingCart, size: 20.r),
           SizedBox(width: 8.w),
-          Text(isAvailable
-              ? 'premium_purchase'.tr
-              : 'premium_store_unavailable'.tr),
+          Flexible(
+            child: Text(
+              isAvailable
+                  ? 'premium_purchase'.tr
+                  : 'premium_store_unavailable'.tr,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       );
     }

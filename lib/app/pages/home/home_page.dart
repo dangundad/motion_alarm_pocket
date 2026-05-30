@@ -195,6 +195,8 @@ class _StatusCircle extends StatelessWidget {
           _statusText(),
           style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         if (isArmed && lastDelta > 0)
           Text(
@@ -288,9 +290,13 @@ class _SettingsCard extends StatelessWidget {
                 Icon(LucideIcons.timer,
                     size: 18.r, color: cs.onSurfaceVariant),
                 SizedBox(width: 8.w),
-                Text(
-                  'delay_label'.trParams({'n': '$delaySeconds'}),
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Flexible(
+                  child: Text(
+                    'delay_label'.trParams({'n': '$delaySeconds'}),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -308,9 +314,13 @@ class _SettingsCard extends StatelessWidget {
                 Icon(LucideIcons.activity,
                     size: 18.r, color: cs.onSurfaceVariant),
                 SizedBox(width: 8.w),
-                Text(
-                  'sensitivity'.tr,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Flexible(
+                  child: Text(
+                    'sensitivity'.tr,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -412,7 +422,13 @@ class _Step extends StatelessWidget {
           SizedBox(width: 10.w),
           Icon(icon, size: 18.r, color: cs.onSurfaceVariant),
           SizedBox(width: 8.w),
-          Expanded(child: Text(textKey.tr)),
+          Expanded(
+            child: Text(
+              textKey.tr,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );
@@ -452,8 +468,16 @@ class _HistoryTile extends StatelessWidget {
           child: Icon(LucideIcons.activity,
               size: 20.r, color: cs.onErrorContainer),
         ),
-        title: Text(entry['title']?.toString() ?? ''),
-        subtitle: Text(entry['detail']?.toString() ?? ''),
+        title: Text(
+          entry['title']?.toString() ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          entry['detail']?.toString() ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: Text(
           _formatTime(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -480,12 +504,16 @@ class _RemoveAdsCta extends StatelessWidget {
           children: [
             Icon(LucideIcons.heart, size: 16.r, color: cs.primary),
             SizedBox(width: 6.w),
-            Text(
-              'remove_ads_cta'.tr,
-              style: TextStyle(
-                color: cs.primary,
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
+            Flexible(
+              child: Text(
+                'remove_ads_cta'.tr,
+                style: TextStyle(
+                  color: cs.primary,
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(width: 4.w),
@@ -511,11 +539,15 @@ class _EmptyState extends StatelessWidget {
         children: [
           Icon(icon, size: 20.r, color: cs.onSurfaceVariant),
           SizedBox(width: 8.w),
-          Text(
-            text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: cs.onSurfaceVariant,
-                ),
+          Flexible(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: cs.onSurfaceVariant,
+                  ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
