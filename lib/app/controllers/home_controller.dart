@@ -75,11 +75,15 @@ class HomeController extends GetxController {
     final sample = AccelerationSample(x: event.x, y: event.y, z: event.z);
     final startedAt = _startedAt;
     if (startedAt == null) return;
-    isArmed.value = MotionAlarmLogic.isArmed(
-      startedAt: startedAt,
-      now: DateTime.now(),
-      delay: Duration(seconds: delaySeconds.value),
-    );
+    // isArmed only ever flips false→true within a session (time is monotonic
+    // and the delay is locked while running), so stop recomputing once armed.
+    if (!isArmed.value) {
+      isArmed.value = MotionAlarmLogic.isArmed(
+        startedAt: startedAt,
+        now: DateTime.now(),
+        delay: Duration(seconds: delaySeconds.value),
+      );
+    }
     final previous = _lastSample;
     _lastSample = sample;
     if (previous == null || !isArmed.value || isAlarmActive.value) return;
@@ -114,13 +118,7 @@ class HomeController extends GetxController {
     }
   }
 
-  bool _shouldShowAd() {
-    try {
-      return !PurchaseService.to.isPremium.value;
-    } catch (_) {
-      return true;
-    }
-  }
+  bool _shouldShowAd() => !PurchaseService.premiumActive;
 
   Future<void> stopSession() async {
     await _subscription?.cancel();

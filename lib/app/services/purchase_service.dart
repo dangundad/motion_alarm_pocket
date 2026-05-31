@@ -15,11 +15,16 @@ abstract final class PurchaseConstants {
 class PurchaseService extends GetxService {
   static PurchaseService get to => Get.find(tag: 'purchase_service');
 
+  /// Reactive-safe premium read. Returns false until the service is
+  /// registered. Safe inside Obx — subscribes to [isPremium] when available.
+  static bool get premiumActive =>
+      Get.isRegistered<PurchaseService>(tag: 'purchase_service')
+          ? to.isPremium.value
+          : false;
+
   final isPremium = false.obs;
   final isLoading = false.obs;
   final available = false.obs;
-  final isProductsLoaded = false.obs;
-  final isPurchaseStatusLoaded = false.obs;
   final products = <ProductDetails>[].obs;
 
   StreamSubscription<List<PurchaseDetails>>? _subscription;
@@ -30,7 +35,6 @@ class PurchaseService extends GetxService {
   Future<void> onInit() async {
     super.onInit();
     await _loadPurchaseStatus();
-    isPurchaseStatusLoaded.value = true;
     await _initializeStore();
   }
 
@@ -65,12 +69,21 @@ class PurchaseService extends GetxService {
       Set<String>.from(PurchaseConstants.productIds),
     );
     products.assignAll(response.productDetails);
-    isProductsLoaded.value = true;
   }
 
   Future<void> _reconcileEntitlementsSilently() async {
     if (isPremium.value) return;
     _silentRestore = true;
+    try {
+      await _restoreAndAwait();
+    } finally {
+      _silentRestore = false;
+    }
+  }
+
+  /// Triggers a restore and waits for the purchase stream to settle, capped
+  /// at 8 seconds. Shared by silent reconcile and explicit restore.
+  Future<void> _restoreAndAwait() async {
     _restoreCompleter = Completer<void>();
     try {
       await InAppPurchase.instance.restorePurchases();
@@ -78,7 +91,6 @@ class PurchaseService extends GetxService {
     } catch (_) {
       // timeout or error — keep cached status
     } finally {
-      _silentRestore = false;
       _restoreCompleter = null;
     }
   }
@@ -131,15 +143,10 @@ class PurchaseService extends GetxService {
 
   Future<void> restorePurchases() async {
     isLoading.value = true;
-    _restoreCompleter = Completer<void>();
     try {
-      await InAppPurchase.instance.restorePurchases();
-      await _restoreCompleter!.future.timeout(const Duration(seconds: 8));
-    } catch (_) {
-      // keep existing status on failure
+      await _restoreAndAwait();
     } finally {
       isLoading.value = false;
-      _restoreCompleter = null;
     }
   }
 

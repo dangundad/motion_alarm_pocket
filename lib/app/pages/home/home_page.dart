@@ -13,14 +13,6 @@ import '../../services/purchase_service.dart';
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
-  bool get _isPremium {
-    try {
-      return PurchaseService.to.isPremium.value;
-    } catch (_) {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +20,7 @@ class HomePage extends GetView<HomeController> {
         title: Text('app_title'.tr),
         actions: [
           Obx(() {
-            final premium = _isPremium;
+            final premium = PurchaseService.premiumActive;
             return IconButton(
               icon: Icon(
                 premium ? LucideIcons.shieldCheck : LucideIcons.crown,
@@ -43,7 +35,7 @@ class HomePage extends GetView<HomeController> {
         ],
       ),
       bottomNavigationBar: Obx(() {
-        if (_isPremium) return const SizedBox.shrink();
+        if (PurchaseService.premiumActive) return const SizedBox.shrink();
         return const SafeArea(
           child: BannerAdWidget(adUnitId: AdHelper.bannerUnitId),
         );
@@ -91,9 +83,19 @@ class HomePage extends GetView<HomeController> {
                   )),
             SizedBox(height: 12.h),
             Obx(() {
-              if (_isPremium) return const SizedBox.shrink();
+              if (PurchaseService.premiumActive) return const SizedBox.shrink();
               return _RemoveAdsCta();
             }),
+            SizedBox(height: 12.h),
+            Text(
+              'policy_note'.tr,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             SizedBox(height: 12.h),
           ],
         ),

@@ -13,8 +13,12 @@ import 'app/translate/translate.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await HiveService.init();
-  await AdHelper.initialize();
+  // Hive boxes and the ad SDK init independently — run them concurrently so
+  // the first frame paints sooner.
+  await Future.wait([
+    HiveService.init(),
+    AdHelper.initialize(),
+  ]);
   runApp(const CuriosityApp());
 }
 
