@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -15,10 +16,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // Hive boxes and the ad SDK init independently — run them concurrently so
   // the first frame paints sooner.
-  await Future.wait([
-    HiveService.init(),
-    AdHelper.initialize(),
-  ]);
+  await Future.wait([HiveService.init(), AdHelper.initialize()]);
   runApp(const CuriosityApp());
 }
 
@@ -35,14 +33,21 @@ class CuriosityApp extends StatelessWidget {
           title: 'Motion Alarm Pocket',
           debugShowCheckedModeBanner: false,
           translations: AppTranslations(),
-          locale: Get.deviceLocale ?? const Locale('en', 'US'),
-          fallbackLocale: const Locale('en', 'US'),
+          locale: Get.deviceLocale ?? const Locale('en'),
+          fallbackLocale: const Locale('en'),
+          supportedLocales: AppTranslations.supportedLocales,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: ThemeMode.system,
           initialBinding: AppBinding(),
-          initialRoute:
-              HiveService.isFirstRun() ? Routes.onboarding : Routes.home,
+          initialRoute: HiveService.isFirstRun()
+              ? Routes.onboarding
+              : Routes.home,
           getPages: AppPages.pages,
         );
       },

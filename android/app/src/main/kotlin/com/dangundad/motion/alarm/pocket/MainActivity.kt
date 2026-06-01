@@ -1,4 +1,4 @@
-package com.dangundad.motion_alarm_pocket
+package com.dangundad.motion.alarm.pocket
 
 import io.flutter.embedding.android.FlutterActivity
 
