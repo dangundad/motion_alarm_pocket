@@ -121,11 +121,12 @@ class _PremiumPageState extends State<PremiumPage> {
                   SizedBox(height: 16.h),
                   if (!isPremium)
                     Center(
-                      child: TextButton(
+                      child: TextButton.icon(
                         onPressed: _svc.isLoading.value
                             ? null
                             : _svc.restorePurchases,
-                        child: Text('premium_restore'.tr),
+                        icon: Icon(LucideIcons.rotateCcw, size: 16.r),
+                        label: Text('premium_restore'.tr),
                       ),
                     ),
                 ],

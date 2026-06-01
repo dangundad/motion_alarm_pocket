@@ -41,7 +41,8 @@ class CuriosityApp extends StatelessWidget {
           darkTheme: AppTheme.dark,
           themeMode: ThemeMode.system,
           initialBinding: AppBinding(),
-          initialRoute: Routes.home,
+          initialRoute:
+              HiveService.isFirstRun() ? Routes.onboarding : Routes.home,
           getPages: AppPages.pages,
         );
       },

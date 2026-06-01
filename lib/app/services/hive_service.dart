@@ -18,6 +18,17 @@ class HiveService extends GetxService {
   Box<dynamic> get _settings => Hive.box<dynamic>(settingsBox);
   Box<dynamic> get _history => Hive.box<dynamic>(historyBox);
 
+  static const String _kFirstRun = 'first_run';
+
+  /// True until onboarding is completed once. Read statically at startup
+  /// (boxes are already open after [init]) to pick the initial route.
+  static bool isFirstRun() =>
+      Hive.box<dynamic>(settingsBox).get(_kFirstRun, defaultValue: true) == true;
+
+  Future<void> markOnboardingComplete() async {
+    await _settings.put(_kFirstRun, false);
+  }
+
   T? getSetting<T>(String key) {
     final value = _settings.get(key);
     return value is T ? value : null;

@@ -34,6 +34,21 @@ class AppTranslations extends Translations {
           'step_settings': 'Set delay and sensitivity',
           'step_place': 'Tap Start, then keep the phone still',
           'step_stop': 'Stop the session yourself to silence',
+          // onboarding
+          'onboarding_skip': 'Skip',
+          'onboarding_next': 'Next',
+          'onboarding_get_started': 'Get Started',
+          'onboarding_intro_title': 'Pocket motion alarm',
+          'onboarding_intro_desc':
+              'Detects movement and sounds an alarm the moment someone touches your bag or phone.',
+          'onboarding_how_title': 'Set delay and sensitivity',
+          'onboarding_how_desc':
+              'Choose how long to wait before arming and how sensitive motion detection should be.',
+          'onboarding_ready_title': 'Ready to guard',
+          'onboarding_ready_desc':
+              'Place the phone, tap Start, and the alarm watches for movement.',
+          'onboarding_privacy_note':
+              'Runs fully on-device. No account or special permissions.',
           // premium
           'premium': 'Premium',
           'premium_title': 'Support the App',
@@ -91,6 +106,17 @@ class AppTranslations extends Translations {
           'step_settings': '딜레이와 감도를 설정하세요',
           'step_place': '시작을 탭한 후 폰을 가만히 두세요',
           'step_stop': '세션을 직접 중지해야 경보가 꺼집니다',
+          // onboarding
+          'onboarding_skip': '건너뛰기',
+          'onboarding_next': '다음',
+          'onboarding_get_started': '시작하기',
+          'onboarding_intro_title': '주머니 속 움직임 알람',
+          'onboarding_intro_desc': '가방이나 폰에 누군가 손대는 순간 움직임을 감지해 경보를 울립니다.',
+          'onboarding_how_title': '딜레이와 감도 설정',
+          'onboarding_how_desc': '감시를 시작하기 전 대기 시간과 움직임 감지 민감도를 선택하세요.',
+          'onboarding_ready_title': '감시 준비 완료',
+          'onboarding_ready_desc': '폰을 두고 시작을 누르면 알람이 움직임을 감시합니다.',
+          'onboarding_privacy_note': '모든 동작은 기기 안에서 처리됩니다. 계정·별도 권한 불필요.',
           // premium
           'premium': '프리미엄',
           'premium_title': '앱 후원하기',

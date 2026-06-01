@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-05-31T05:57:02.549Z",
+    "errorType": "unknown",
+    "category": "unknown",
+    "severity": "low",
+    "agentId": null,
+    "agentType": null,
+    "sessionId": "4a14703c-70ef-4d1a-adea-27843eabf981",
+    "message": "",
+    "parseStatus": "partial",
+    "parseWarnings": "StopFailure payload missing useful fields (keys: session_id,transcript_path,cwd,effort,hook_event_name,error,last_assistant_message)"
+  },
+  {
+    "timestamp": "2026-05-31T07:41:53.984Z",
+    "errorType": "unknown",
+    "category": "unknown",
+    "severity": "low",
+    "agentId": null,
+    "agentType": null,
+    "sessionId": "4a14703c-70ef-4d1a-adea-27843eabf981",
+    "message": "",
+    "parseStatus": "partial",
+    "parseWarnings": "StopFailure payload missing useful fields (keys: session_id,transcript_path,cwd,effort,hook_event_name,error,last_assistant_message)"
+  },
+  {
+    "timestamp": "2026-05-31T07:51:46.699Z",
+    "errorType": "unknown",
+    "category": "unknown",
+    "severity": "low",
+    "agentId": "afb9158973d575028",
+    "agentType": null,
+    "sessionId": "4a14703c-70ef-4d1a-adea-27843eabf981",
+    "message": "",
+    "parseStatus": "ok",
+    "parseWarnings": null
+  }
+]
