@@ -47,5 +47,37 @@ void main() {
         isFalse,
       );
     });
+
+    test('exactly meeting the start delay arms (boundary)', () {
+      final startedAt = DateTime(2026, 5, 30, 10);
+      expect(
+        MotionAlarmLogic.isArmed(
+          startedAt: startedAt,
+          now: startedAt,
+          delay: Duration.zero,
+        ),
+        isTrue,
+        reason: 'A zero delay should arm immediately.',
+      );
+    });
+  });
+
+  group('AlarmSound persistence mapping', () {
+    test('round-trips through its persisted name', () {
+      for (final sound in AlarmSound.values) {
+        expect(AlarmSound.fromName(sound.name), sound);
+      }
+    });
+
+    test('falls back to siren for unknown or null names', () {
+      expect(AlarmSound.fromName(null), AlarmSound.siren);
+      expect(AlarmSound.fromName('does_not_exist'), AlarmSound.siren);
+      expect(AlarmSound.fromName(''), AlarmSound.siren);
+    });
+
+    test('each sound points at a bundled wav asset', () {
+      expect(AlarmSound.siren.asset, 'sounds/siren.wav');
+      expect(AlarmSound.beep.asset, 'sounds/beep_alarm.wav');
+    });
   });
 }

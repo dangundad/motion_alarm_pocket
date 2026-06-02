@@ -43,7 +43,7 @@ class OnboardingPage extends GetView<OnboardingController> {
                     icon: LucideIcons.slidersHorizontal,
                     titleKey: 'onboarding_how_title',
                     descKey: 'onboarding_how_desc',
-                    child: const _HowToSteps(),
+                    child: const _SensitivityDemo(),
                   ),
                   _OnboardingStep(
                     icon: LucideIcons.shieldCheck,
@@ -154,8 +154,10 @@ class _OnboardingStep extends StatelessWidget {
   }
 }
 
-class _HowToSteps extends StatelessWidget {
-  const _HowToSteps();
+/// A lightweight, non-interactive demo of the three sensitivity levels so a
+/// new user understands the trade-off before reaching the home screen.
+class _SensitivityDemo extends StatelessWidget {
+  const _SensitivityDemo();
 
   @override
   Widget build(BuildContext context) {
@@ -163,10 +165,24 @@ class _HowToSteps extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16.r),
         child: Column(
-          children: const [
-            _HowToRow(num: 1, textKey: 'step_settings'),
-            _HowToRow(num: 2, textKey: 'step_place'),
-            _HowToRow(num: 3, textKey: 'step_stop'),
+          children: [
+            _SensitivityRow(
+              filled: 1,
+              labelKey: 'sensitivity_low',
+              descKey: 'sensitivity_low_desc',
+            ),
+            SizedBox(height: 12.h),
+            _SensitivityRow(
+              filled: 2,
+              labelKey: 'sensitivity_medium',
+              descKey: 'sensitivity_medium_desc',
+            ),
+            SizedBox(height: 12.h),
+            _SensitivityRow(
+              filled: 3,
+              labelKey: 'sensitivity_high',
+              descKey: 'sensitivity_high_desc',
+            ),
           ],
         ),
       ),
@@ -174,44 +190,63 @@ class _HowToSteps extends StatelessWidget {
   }
 }
 
-class _HowToRow extends StatelessWidget {
-  const _HowToRow({required this.num, required this.textKey});
-  final int num;
-  final String textKey;
+class _SensitivityRow extends StatelessWidget {
+  const _SensitivityRow({
+    required this.filled,
+    required this.labelKey,
+    required this.descKey,
+  });
+  final int filled;
+  final String labelKey;
+  final String descKey;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.h),
-      child: Row(
-        children: [
-          Container(
-            width: 26.r,
-            height: 26.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: cs.primaryContainer,
-            ),
-            child: Center(
-              child: Text('$num',
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.bold,
-                      color: cs.onPrimaryContainer)),
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Three bars indicating relative sensitivity.
+        Row(
+          children: List.generate(3, (i) {
+            final on = i < filled;
+            return Container(
+              width: 8.w,
+              height: 18.h,
+              margin: EdgeInsets.only(right: 3.w),
+              decoration: BoxDecoration(
+                color: on ? cs.primary : cs.outlineVariant,
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+            );
+          }),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                labelKey.tr,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w600),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                descKey.tr,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              textKey.tr,
-              style: Theme.of(context).textTheme.bodyMedium,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

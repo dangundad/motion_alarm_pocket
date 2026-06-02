@@ -9,6 +9,7 @@ import '../../controllers/home_controller.dart';
 import '../../domain/motion_alarm_logic.dart';
 import '../../routes/app_pages.dart';
 import '../../services/purchase_service.dart';
+import 'widgets/arm_dial.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -19,6 +20,11 @@ class HomePage extends GetView<HomeController> {
       appBar: AppBar(
         title: Text('app_title'.tr),
         actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.settings),
+            tooltip: 'settings'.tr,
+            onPressed: () => Get.toNamed(Routes.settings),
+          ),
           Obx(() {
             final premium = PurchaseService.premiumActive;
             return IconButton(
@@ -44,33 +50,48 @@ class HomePage extends GetView<HomeController> {
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           children: [
-            Obx(() => _StatusCircle(
-                  isSessionActive: controller.isSessionActive.value,
-                  isArmed: controller.isArmed.value,
-                  isAlarmActive: controller.isAlarmActive.value,
-                  lastDelta: controller.lastDelta.value,
-                )),
+            SizedBox(height: 8.h),
+            Center(
+              child: Obx(() => ArmDial(
+                    state: _dialState(),
+                    armingProgress: controller.armingProgress.value,
+                    // Normalize live delta against the high-sensitivity ceiling.
+                    motion: (controller.lastDelta.value / 12.0).clamp(0.0, 1.0),
+                    onTap: controller.toggleSession,
+                  )),
+            ),
             SizedBox(height: 20.h),
-            Obx(() => _MainActionButton(
+            Obx(() => _PrimaryButton(
                   isSessionActive: controller.isSessionActive.value,
                   isAlarmActive: controller.isAlarmActive.value,
-                  onStart: controller.startSession,
-                  onStop: controller.stopSession,
-                  onStopAlarm: controller.stopAlarm,
+                  onToggle: controller.toggleSession,
+                  onDismiss: controller.stopAlarm,
                 )),
-            SizedBox(height: 16.h),
-            Obx(() => _SettingsCard(
+            SizedBox(height: 8.h),
+            Obx(() => controller.sensorError.value
+                ? _SensorErrorBanner(onRetry: controller.startSession)
+                : const SizedBox.shrink()),
+            SizedBox(height: 8.h),
+            Obx(() => _QuickSettings(
                   delaySeconds: controller.delaySeconds.value,
                   sensitivity: controller.sensitivity.value,
+                  alarmSound: controller.alarmSound.value,
                   enabled: !controller.isSessionActive.value,
                   onDelayChanged: controller.setDelay,
                   onSensitivityChanged: controller.setSensitivity,
+                  onSoundChanged: controller.setAlarmSound,
                 )),
             SizedBox(height: 16.h),
-            const _HowToUseCard(),
-            SizedBox(height: 16.h),
-            Text('history'.tr,
-                style: Theme.of(context).textTheme.titleMedium),
+            Row(
+              children: [
+                Icon(LucideIcons.history,
+                    size: 18.r,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
+                SizedBox(width: 8.w),
+                Text('history'.tr,
+                    style: Theme.of(context).textTheme.titleMedium),
+              ],
+            ),
             SizedBox(height: 8.h),
             Obx(() => controller.history.isEmpty
                 ? _EmptyState(
@@ -102,178 +123,123 @@ class HomePage extends GetView<HomeController> {
       ),
     );
   }
-}
 
-class _StatusCircle extends StatelessWidget {
-  const _StatusCircle({
-    required this.isSessionActive,
-    required this.isArmed,
-    required this.isAlarmActive,
-    required this.lastDelta,
-  });
-
-  final bool isSessionActive;
-  final bool isArmed;
-  final bool isAlarmActive;
-  final double lastDelta;
-
-  Color _circleColor(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    if (isAlarmActive) return cs.error;
-    if (isArmed) return cs.primary;
-    if (isSessionActive) return cs.tertiary;
-    return cs.surfaceContainerHighest;
-  }
-
-  Color _iconColor(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    if (isAlarmActive) return cs.onError;
-    if (isArmed) return cs.onPrimary;
-    if (isSessionActive) return cs.onTertiary;
-    return cs.onSurfaceVariant;
-  }
-
-  IconData get _icon {
-    if (isAlarmActive) return LucideIcons.siren;
-    if (isArmed) return LucideIcons.shieldCheck;
-    if (isSessionActive) return LucideIcons.timer;
-    return LucideIcons.shield;
-  }
-
-  String _statusText() {
-    if (isAlarmActive) return 'alarm_active'.tr;
-    if (isArmed) return 'armed'.tr;
-    if (isSessionActive) return 'arming'.tr;
-    return 'idle'.tr;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final progress = (lastDelta / 18.0).clamp(0.0, 1.0);
-    final cs = Theme.of(context).colorScheme;
-
-    return Column(
-      children: [
-        Center(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 160.r,
-                height: 160.r,
-                child: CircularProgressIndicator(
-                  value: isArmed ? progress : null,
-                  strokeWidth: 6,
-                  backgroundColor: cs.outlineVariant,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isAlarmActive ? cs.error : cs.primary,
-                  ),
-                ),
-              ),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                width: 130.r,
-                height: 130.r,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _circleColor(context),
-                  boxShadow: (isAlarmActive || isArmed)
-                      ? [
-                          BoxShadow(
-                            color: _circleColor(context).withAlpha(100),
-                            blurRadius: 24,
-                            spreadRadius: 4,
-                          ),
-                        ]
-                      : [],
-                ),
-                child: Icon(_icon, size: 52.r, color: _iconColor(context)),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 12.h),
-        Text(
-          _statusText(),
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        if (isArmed && lastDelta > 0)
-          Text(
-            '${'delta'.tr}: ${lastDelta.toStringAsFixed(1)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: cs.onSurfaceVariant,
-                ),
-          ),
-      ],
-    );
+  ArmDialState _dialState() {
+    if (controller.isAlarmActive.value) return ArmDialState.alarm;
+    if (controller.isArmed.value) return ArmDialState.armed;
+    if (controller.isSessionActive.value) return ArmDialState.arming;
+    return ArmDialState.disarmed;
   }
 }
 
-class _MainActionButton extends StatelessWidget {
-  const _MainActionButton({
+class _PrimaryButton extends StatelessWidget {
+  const _PrimaryButton({
     required this.isSessionActive,
     required this.isAlarmActive,
-    required this.onStart,
-    required this.onStop,
-    required this.onStopAlarm,
+    required this.onToggle,
+    required this.onDismiss,
   });
 
   final bool isSessionActive;
   final bool isAlarmActive;
-  final VoidCallback onStart;
-  final VoidCallback onStop;
-  final VoidCallback onStopAlarm;
+  final VoidCallback onToggle;
+  final VoidCallback onDismiss;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    // Alarm state: an unmistakable full-width crimson DISMISS affordance.
+    // Always clearly app UI — never an OS-style lock screen.
     if (isAlarmActive) {
       return FilledButton.icon(
-        onPressed: onStopAlarm,
+        onPressed: onDismiss,
         style: FilledButton.styleFrom(
-          minimumSize: Size(double.infinity, 60.h),
+          minimumSize: Size(double.infinity, 64.h),
           backgroundColor: cs.error,
           foregroundColor: cs.onError,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         ),
         icon: const Icon(LucideIcons.bellOff),
-        label: Text('stop_alarm'.tr, style: TextStyle(fontSize: 18.sp)),
+        label: Text('dismiss_alarm'.tr,
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700)),
       );
     }
     return FilledButton.icon(
-      onPressed: isSessionActive ? onStop : onStart,
+      onPressed: onToggle,
       style: FilledButton.styleFrom(
         minimumSize: Size(double.infinity, 60.h),
+        backgroundColor: isSessionActive ? cs.surfaceContainerHighest : null,
+        foregroundColor: isSessionActive ? cs.onSurface : null,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       ),
-      icon: Icon(isSessionActive ? LucideIcons.square : LucideIcons.play),
+      icon: Icon(isSessionActive ? LucideIcons.square : LucideIcons.power),
       label: Text(
-        isSessionActive ? 'stop'.tr : 'start'.tr,
-        style: TextStyle(fontSize: 18.sp),
+        isSessionActive ? 'disarm'.tr : 'arm'.tr,
+        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
       ),
     );
   }
 }
 
-class _SettingsCard extends StatelessWidget {
-  const _SettingsCard({
+class _SensorErrorBanner extends StatelessWidget {
+  const _SensorErrorBanner({required this.onRetry});
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: cs.errorContainer,
+        borderRadius: BorderRadius.circular(14.r),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.triangleAlert,
+              size: 20.r, color: cs.onErrorContainer),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              'sensor_unavailable'.tr,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: cs.onErrorContainer,
+                  ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          SizedBox(width: 8.w),
+          TextButton(
+            onPressed: onRetry,
+            child: Text('retry'.tr),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickSettings extends StatelessWidget {
+  const _QuickSettings({
     required this.delaySeconds,
     required this.sensitivity,
+    required this.alarmSound,
     required this.enabled,
     required this.onDelayChanged,
     required this.onSensitivityChanged,
+    required this.onSoundChanged,
   });
 
   final int delaySeconds;
   final MotionSensitivity sensitivity;
+  final AlarmSound alarmSound;
   final bool enabled;
   final ValueChanged<double> onDelayChanged;
   final ValueChanged<MotionSensitivity> onSensitivityChanged;
+  final ValueChanged<AlarmSound> onSoundChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -284,13 +250,26 @@ class _SettingsCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('settings'.tr,
-                style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 12.h),
             Row(
               children: [
-                Icon(LucideIcons.timer,
+                Icon(LucideIcons.slidersHorizontal,
                     size: 18.r, color: cs.onSurfaceVariant),
+                SizedBox(width: 8.w),
+                Text('settings'.tr,
+                    style: Theme.of(context).textTheme.titleMedium),
+                const Spacer(),
+                TextButton.icon(
+                  onPressed: () => Get.toNamed(Routes.settings),
+                  icon: Icon(LucideIcons.chevronRight, size: 16.r),
+                  label: Text('more_settings'.tr,
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              children: [
+                Icon(LucideIcons.timer, size: 18.r, color: cs.onSurfaceVariant),
                 SizedBox(width: 8.w),
                 Flexible(
                   child: Text(
@@ -317,12 +296,10 @@ class _SettingsCard extends StatelessWidget {
                     size: 18.r, color: cs.onSurfaceVariant),
                 SizedBox(width: 8.w),
                 Flexible(
-                  child: Text(
-                    'sensitivity'.tr,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  child: Text('sensitivity'.tr,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),
@@ -349,89 +326,40 @@ class _SettingsCard extends StatelessWidget {
               onSelectionChanged:
                   enabled ? (s) => onSensitivityChanged(s.first) : null,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HowToUseCard extends StatelessWidget {
-  const _HowToUseCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('how_to_use'.tr,
-                style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 10.h),
-            _Step(
-                num: 1,
-                icon: LucideIcons.slidersHorizontal,
-                textKey: 'step_settings'),
-            _Step(
-                num: 2,
-                icon: LucideIcons.smartphone,
-                textKey: 'step_place'),
-            _Step(
-                num: 3,
-                icon: LucideIcons.bellOff,
-                textKey: 'step_stop'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Step extends StatelessWidget {
-  const _Step(
-      {required this.num, required this.icon, required this.textKey});
-  final int num;
-  final IconData icon;
-  final String textKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h),
-      child: Row(
-        children: [
-          Container(
-            width: 26.r,
-            height: 26.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: cs.primaryContainer,
-            ),
-            child: Center(
-              child: Text(
-                '$num',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.bold,
-                  color: cs.onPrimaryContainer,
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                Icon(LucideIcons.volume2,
+                    size: 18.r, color: cs.onSurfaceVariant),
+                SizedBox(width: 8.w),
+                Flexible(
+                  child: Text('alarm_sound'.tr,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
                 ),
-              ),
+              ],
             ),
-          ),
-          SizedBox(width: 10.w),
-          Icon(icon, size: 18.r, color: cs.onSurfaceVariant),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Text(
-              textKey.tr,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            SizedBox(height: 8.h),
+            SegmentedButton<AlarmSound>(
+              segments: [
+                ButtonSegment(
+                  value: AlarmSound.siren,
+                  label: Text('sound_siren'.tr),
+                  icon: const Icon(LucideIcons.siren),
+                ),
+                ButtonSegment(
+                  value: AlarmSound.beep,
+                  label: Text('sound_beep'.tr),
+                  icon: const Icon(LucideIcons.bellRing),
+                ),
+              ],
+              selected: {alarmSound},
+              onSelectionChanged:
+                  enabled ? (s) => onSoundChanged(s.first) : null,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

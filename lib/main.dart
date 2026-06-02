@@ -71,7 +71,9 @@ class CuriosityApp extends StatelessWidget {
           ],
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
-          themeMode: ThemeMode.system,
+          // Sentry ships dark by default — the tactical identity is designed
+          // for the dark surfaces; light is a coherent fallback.
+          themeMode: ThemeMode.dark,
           defaultTransition: Transition.fadeIn,
           initialBinding: AppBinding(),
           initialRoute:

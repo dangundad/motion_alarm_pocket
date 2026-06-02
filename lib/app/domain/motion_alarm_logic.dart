@@ -17,6 +17,21 @@ enum MotionSensitivity {
   final double threshold;
 }
 
+/// Selectable alarm tones. [asset] is the bundled file the player loops.
+/// Persisted by [name]; [fromName] reverses that mapping safely.
+enum AlarmSound {
+  siren('sounds/siren.wav'),
+  beep('sounds/beep_alarm.wav');
+
+  const AlarmSound(this.asset);
+  final String asset;
+
+  static AlarmSound fromName(String? name) => AlarmSound.values.firstWhere(
+        (sound) => sound.name == name,
+        orElse: () => AlarmSound.siren,
+      );
+}
+
 abstract final class MotionAlarmLogic {
   static double delta(AccelerationSample previous, AccelerationSample current) {
     final dx = current.x - previous.x;
