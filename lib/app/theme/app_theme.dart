@@ -17,10 +17,13 @@ abstract final class AppTheme {
   static const Color _slateDeep = Color(0xFF0F172A); // background
   static const Color _slateSurface = Color(0xFF131C2E); // surface / cards
 
-  // Body uses Noto Sans; headings + timer override to Rajdhani below.
-  static final TextTheme _baseText = GoogleFonts.notoSansTextTheme();
-
-  static TextTheme _tacticalText(TextTheme base) {
+  // Body uses Noto Sans; headings + timer override to Rajdhani below. The base
+  // is built per-[brightness] so default text colors contrast with the surface
+  // (otherwise headings without an explicit color render dark on the dark theme).
+  static TextTheme _tacticalText(Brightness brightness) {
+    final base = GoogleFonts.notoSansTextTheme(
+      ThemeData(brightness: brightness).textTheme,
+    );
     final rajdhani = GoogleFonts.rajdhani().fontFamily;
     return base.copyWith(
       displayLarge: base.displayLarge?.copyWith(fontFamily: rajdhani),
@@ -67,7 +70,7 @@ abstract final class AppTheme {
 
   static ThemeData get light => FlexThemeData.light(
         colors: _lightColors,
-        textTheme: _tacticalText(_baseText),
+        textTheme: _tacticalText(Brightness.light),
         useMaterial3: true,
         subThemesData: _subThemes,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
@@ -77,7 +80,7 @@ abstract final class AppTheme {
 
   static ThemeData get dark => FlexThemeData.dark(
         colors: _darkColors,
-        textTheme: _tacticalText(_baseText),
+        textTheme: _tacticalText(Brightness.dark),
         useMaterial3: true,
         subThemesData: _subThemes,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
