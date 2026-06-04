@@ -1,42 +1,26 @@
-# Google Play Store Listing Copy
-
-> 기준일: 2026-06-01
-> Source of truth: `lib/app/translate/translate.dart`의 11개 지원 로케일, `lib/app/pages/*`, `lib/app/controllers/home_controller.dart`, `lib/app/domain/motion_alarm_logic.dart`, `android/app/src/main/AndroidManifest.xml`, `pubspec.yaml`.
-
-Google Play 기본 제한은 앱 이름 30자, 간단한 설명 80자, 전체 설명 4000자다. 이 문서는 간단한 설명을 60자 이내로 관리한다. 제목에는 이모지, 순위/가격/프로모션 문구, 과장된 감지 보장 표현을 넣지 않는다.
-
----
-
 ### 1. 영어 (en)
 
 #### 앱 제목 (30자 이내)
 Motion Alarm Pocket - Guard
 
-#### 앱 간략한 설명 (60자 이내)
-Motion alarm for a phone in your pocket or bag.
+#### 앱 간략한 설명 (80자 이내)
+Arm a pocket motion alarm with delay and sensitivity.
 
 #### 앱 설명 (4000자 이내)
-Turn your phone into a pocket motion alarm.
-Motion Alarm Pocket plays a siren and vibration when your phone or bag is moved, so you can notice when someone touches it.
+Motion Alarm Pocket - Guard is a focused Android utility for a user-started local session.
 
-How it works
-• Set a short delay before arming
-• Choose low, medium, or high sensitivity
-• Tap Start and leave the phone still
+🔎 What you can do
+• Accelerometer session that arms after a visible start delay
+• Low, medium, and high sensitivity choices
+• Siren or beep sound preview before use
+• Recent local history after alarm sessions
 
-Clear alerts
-• Siren sound plus vibration when motion is detected
-• Stop the alarm yourself with one tap
-• Local history for recent detections
+🔒 Privacy and limits
+• Motion sensing is local and depends on the device accelerometer; it is not guaranteed security.
+• Hardware signals can vary by device, sensor quality, OS state, and environment.
+• It does not guarantee security, recovery, detection, delivery, or emergency response.
 
-Private and on-device
-• Uses the motion sensor on your device
-• No account, location, or special permission required
-• Detection depends on device sensors and environment, so it is not guaranteed
-
-Premium is optional. Remove ads with a one-time support purchase. Not a subscription.
-
-Privacy policy: https://dangundad.github.io/privacy/motion-alarm-pocket
+Use it as a practical local tool, with clear controls and honest limits.
 
 ---
 
@@ -45,31 +29,24 @@ Privacy policy: https://dangundad.github.io/privacy/motion-alarm-pocket
 #### 앱 제목 (30자 이내)
 모션 알람 포켓 - 움직임 경보
 
-#### 앱 간략한 설명 (60자 이내)
-주머니·가방 속 폰 움직임을 감지해 경보를 울립니다.
+#### 앱 간략한 설명 (80자 이내)
+시작 지연과 감도를 고르는 주머니 모션 알람.
 
 #### 앱 설명 (4000자 이내)
-폰을 주머니 속 움직임 알람으로 바꿔보세요.
-모션 알람 포켓은 폰이나 가방이 움직이면 사이렌과 진동으로 알려, 누군가 손대는 순간을 알아챌 수 있게 합니다.
+모션 알람 포켓 - 움직임 경보 앱은 사용자가 직접 시작한 로컬 세션을 빠르게 다루는 Android 유틸리티입니다.
 
-사용 방법
-• 감시 시작 전 짧은 딜레이 설정
-• 낮음, 중간, 높음 감도 선택
-• 시작을 누르고 폰을 가만히 두기
+🔎 할 수 있는 일
+• 눈에 보이는 시작 지연 후 켜지는 가속도계 세션
+• 낮음, 보통, 높음 감도 선택
+• 사용 전 사이렌/비프 경보음 미리듣기
+• 알람 세션 후 남는 최근 로컬 기록
 
-분명한 경보
-• 움직임 감지 시 사이렌 소리와 진동
-• 한 번의 탭으로 직접 경보 중지
-• 최근 감지 기록을 로컬에서 확인
+🔒 개인정보와 한계
+• 움직임 감지는 기기 가속도계에 의존하는 로컬 기능이며 보안을 보장하지 않습니다.
+• 하드웨어 신호는 기기, 센서 품질, OS 상태, 주변 환경에 따라 달라질 수 있습니다.
+• 보안, 회수, 감지, 전달, 긴급 대응을 보장하지 않습니다.
 
-기기 내 처리와 프라이버시
-• 기기의 움직임 센서 사용
-• 계정, 위치, 별도 권한 불필요
-• 감지는 기기 센서와 환경에 따라 달라지며 보장되지 않습니다
-
-프리미엄은 선택 사항입니다. 일회성 후원 구매로 광고를 제거할 수 있습니다. 구독이 아닙니다.
-
-개인정보처리방침: https://dangundad.github.io/privacy/motion-alarm-pocket
+명확한 조작과 한계를 가진 실용적인 로컬 도구로 사용하세요.
 
 ---
 
@@ -78,262 +55,206 @@ Privacy policy: https://dangundad.github.io/privacy/motion-alarm-pocket
 #### 앱 제목 (30자 이내)
 モーションアラーム - 見守り
 
-#### 앱 간략한 설명 (60자 이내)
-ポケットやバッグのスマホの動きを検知して警告。
+#### 앱 간략한 설명 (80자 이내)
+遅延と感度を選べるポケット用モーションアラーム。
 
 #### 앱 설명 (4000자 이내)
-スマホをポケット用の動きアラームに。
-Motion Alarm Pocket は、スマホやバッグが動いたときにサイレンとバイブレーションで知らせます。
+モーションアラーム - 見守り は、ユーザーが開始するローカルセッション向けのAndroidユーティリティです。
 
-使い方
-• 監視開始前の短い遅延を設定
-• 低、中、高の感度を選択
-• 開始を押してスマホを静かに置く
+🔎 できること
+• 見える開始遅延の後に有効になる加速度セッション
+• 低・中・高の感度選択
+• 使用前にサイレン/ビープ音をプレビュー
+• アラームセッション後のローカル履歴
 
-分かりやすい通知
-• 動きを検知するとサイレンとバイブレーション
-• ワンタップで自分でアラーム停止
-• 最近の検知履歴を端末内で確認
+🔒 プライバシーと制限
+• 動き検知は端末の加速度計に依存するローカル機能で、セキュリティを保証しません。
+• ハードウェア信号は端末、センサー品質、OS状態、周囲の環境によって変わります。
+• 安全性、回収、検知、通知、緊急対応を保証するものではありません。
 
-端末内処理とプライバシー
-• 端末のモーションセンサーを使用
-• アカウント、位置情報、特別な権限は不要
-• 検知は端末のセンサーと環境に依存し、保証されません
-
-プレミアムは任意です。買い切りの応援購入で広告を削除できます。サブスクではありません。
-
-プライバシーポリシー: https://dangundad.github.io/privacy/motion-alarm-pocket
+分かりやすい操作と正直な制限を備えたローカルツールとして使えます。
 
 ---
 
 ### 4. 독일어 (de)
 
 #### 앱 제목 (30자 이내)
-Motion Alarm - Tasche
+Bewegungsalarm Tasche
 
-#### 앱 간략한 설명 (60자 이내)
-Bewegungsalarm für dein Telefon in Tasche oder Rucksack.
+#### 앱 간략한 설명 (80자 이내)
+Bewegungsalarm mit Verzogerung und Empfindlichkeit.
 
 #### 앱 설명 (4000자 이내)
-Mach dein Telefon zu einem Bewegungsalarm für die Tasche.
-Motion Alarm Pocket spielt Sirene und Vibration ab, wenn dein Telefon oder deine Tasche bewegt wird.
+Bewegungsalarm Tasche ist ein Android-Tool fur lokal gestartete Sitzungen.
 
-So funktioniert es
-• Kurze Verzögerung vor dem Scharfstellen festlegen
-• Niedrige, mittlere oder hohe Empfindlichkeit wählen
-• Start tippen und das Telefon ruhig liegen lassen
+🔎 Das ist moglich
+• Beschleunigungssensor-Sitzung mit sichtbarer Startverzogerung
+• Niedrige, mittlere und hohe Empfindlichkeit
+• Sirenenton oder Piepton vorab testen
+• Lokale Verlaufseintrage nach Alarm-Sitzungen
 
-Klare Alarme
-• Sirene plus Vibration bei erkannter Bewegung
-• Alarm mit einem Tipp selbst stoppen
-• Lokaler Verlauf für aktuelle Erkennungen
+🔒 Datenschutz und Grenzen
+• Die Bewegungserkennung ist lokal und hangt vom Beschleunigungssensor ab; sie ist keine Sicherheitsgarantie.
+• Hardware-Signale konnen je nach Gerat, Sensorqualitat, OS-Zustand und Umgebung variieren.
+• Es garantiert keine Sicherheit, Wiederbeschaffung, Erkennung, Zustellung oder Notfallreaktion.
 
-Privat und auf dem Gerät
-• Nutzt den Bewegungssensor deines Geräts
-• Kein Konto, Standort oder besondere Berechtigung erforderlich
-• Erkennung hängt von Sensoren und Umgebung ab und ist nicht garantiert
-
-Premium ist optional. Entferne Werbung mit einem einmaligen Unterstützungskauf. Kein Abo.
-
-Datenschutzerklärung: https://dangundad.github.io/privacy/motion-alarm-pocket
+Nutze es als praktisches lokales Tool mit klaren Bedienelementen und ehrlichen Grenzen.
 
 ---
 
 ### 5. 러시아어 (ru)
 
 #### 앱 제목 (30자 이내)
-Сигнал движения - Карман
+Карманный сигнал движения
 
-#### 앱 간략한 설명 (60자 이내)
-Сигнал при движении телефона в кармане или сумке.
+#### 앱 간략한 설명 (80자 이내)
+Сигнал движения с задержкой и настройкой чувствительности.
 
 #### 앱 설명 (4000자 이내)
-Превратите телефон в карманную сигнализацию движения.
-Motion Alarm Pocket включает сирену и вибрацию, когда телефон или сумку двигают.
+Карманный сигнал движения - Android-утилита для локального сеанса, который запускает сам пользователь.
 
-Как это работает
-• Задайте короткую задержку перед охраной
-• Выберите низкую, среднюю или высокую чувствительность
-• Нажмите Старт и оставьте телефон неподвижным
+🔎 Что можно делать
+• Сеанс акселерометра с видимой задержкой перед охраной
+• Низкая, средняя и высокая чувствительность
+• Предпросмотр сирены или сигнала перед запуском
+• Локальная история после тревожных сеансов
 
-Понятные сигналы
-• Сирена и вибрация при обнаружении движения
-• Остановите сигнал одним касанием
-• Локальная история последних обнаружений
+🔒 Конфиденциальность и ограничения
+• Обнаружение движения локальное и зависит от акселерометра; это не гарантия безопасности.
+• Аппаратные сигналы зависят от устройства, качества датчиков, состояния ОС и окружения.
+• Приложение не гарантирует безопасность, возврат, обнаружение, доставку или экстренную реакцию.
 
-Приватно и на устройстве
-• Использует датчик движения устройства
-• Не требует аккаунта, геолокации или особых разрешений
-• Обнаружение зависит от датчиков и среды, поэтому не гарантируется
-
-Премиум необязателен. Уберите рекламу разовой покупкой в поддержку приложения. Это не подписка.
-
-Политика конфиденциальности: https://dangundad.github.io/privacy/motion-alarm-pocket
+Используйте его как практичный локальный инструмент с понятными ограничениями.
 
 ---
 
 ### 6. 프랑스어 (fr)
 
 #### 앱 제목 (30자 이내)
-Motion Alarm - Poche
+Alarme mouvement poche
 
-#### 앱 간략한 설명 (60자 이내)
-Alarme de mouvement pour téléphone dans poche ou sac.
+#### 앱 간략한 설명 (80자 이내)
+Alarme de mouvement avec delai et sensibilite.
 
 #### 앱 설명 (4000자 이내)
-Transformez votre téléphone en alarme de mouvement de poche.
-Motion Alarm Pocket lance une sirène et une vibration quand votre téléphone ou votre sac est déplacé.
+Alarme mouvement poche est un utilitaire Android pour une session locale lancee par l utilisateur.
 
-Fonctionnement
-• Définissez un court délai avant l’armement
-• Choisissez une sensibilité faible, moyenne ou élevée
-• Touchez Démarrer et laissez le téléphone immobile
+🔎 Ce que vous pouvez faire
+• Session accelerometre armee apres un delai visible
+• Choix de sensibilite faible, moyenne ou elevee
+• Apercu sirene ou bip avant utilisation
+• Historique local recent apres les sessions
 
-Alertes claires
-• Sirène et vibration lorsqu’un mouvement est détecté
-• Arrêt de l’alarme en un seul geste
-• Historique local des détections récentes
+🔒 Confidentialite et limites
+• La detection de mouvement est locale et depend de l accelerometre; ce n est pas une garantie de securite.
+• Les signaux materiels varient selon l appareil, les capteurs, l etat du systeme et l environnement.
+• L app ne garantit pas la securite, la recuperation, la detection, la livraison ou l urgence.
 
-Privé et sur l’appareil
-• Utilise le capteur de mouvement de l’appareil
-• Aucun compte, localisation ou permission spéciale
-• La détection dépend des capteurs et de l’environnement et n’est pas garantie
-
-Premium est facultatif. Supprimez les pubs avec un achat de soutien unique. Ce n’est pas un abonnement.
-
-Politique de confidentialité : https://dangundad.github.io/privacy/motion-alarm-pocket
+Utilisez-la comme un outil local pratique, avec des commandes claires et des limites explicites.
 
 ---
 
 ### 7. 스페인어 (es)
 
 #### 앱 제목 (30자 이내)
-Motion Alarm - Bolsillo
+Alarma movimiento bolsillo
 
-#### 앱 간략한 설명 (60자 이내)
-Alarma de movimiento para tu móvil en bolsillo o bolso.
+#### 앱 간략한 설명 (80자 이내)
+Alarma de movimiento con demora y sensibilidad.
 
 #### 앱 설명 (4000자 이내)
-Convierte tu móvil en una alarma de movimiento de bolsillo.
-Motion Alarm Pocket reproduce sirena y vibración cuando se mueve tu móvil o bolso.
+Alarma movimiento bolsillo es una utilidad Android para una sesion local iniciada por el usuario.
 
-Cómo funciona
-• Configura un breve retraso antes de activar
-• Elige sensibilidad baja, media o alta
-• Toca Iniciar y deja el móvil quieto
+🔎 Que puedes hacer
+• Sesion con acelerometro que se arma tras una demora visible
+• Sensibilidad baja, media y alta
+• Vista previa de sirena o bip antes de usar
+• Historial local reciente tras las sesiones
 
-Alertas claras
-• Sirena y vibración cuando se detecta movimiento
-• Detén la alarma tú mismo con un toque
-• Historial local de detecciones recientes
+🔒 Privacidad y limites
+• La deteccion de movimiento es local y depende del acelerometro; no garantiza seguridad.
+• Las senales de hardware varian segun el dispositivo, los sensores, el sistema y el entorno.
+• No garantiza seguridad, recuperacion, deteccion, entrega ni respuesta de emergencia.
 
-Privado y en el dispositivo
-• Usa el sensor de movimiento del dispositivo
-• Sin cuenta, ubicación ni permisos especiales
-• La detección depende de los sensores y el entorno, y no está garantizada
-
-Premium es opcional. Quita anuncios con una compra única de apoyo. No es suscripción.
-
-Política de privacidad: https://dangundad.github.io/privacy/motion-alarm-pocket
+Usala como una herramienta local practica, con controles claros y limites honestos.
 
 ---
 
 ### 8. 포르투갈어 (pt)
 
 #### 앱 제목 (30자 이내)
-Motion Alarm - Bolso
+Alarme de movimento
 
-#### 앱 간략한 설명 (60자 이내)
-Alarme de movimento para celular no bolso ou mochila.
+#### 앱 간략한 설명 (80자 이내)
+Alarme de movimento com atraso e sensibilidade.
 
 #### 앱 설명 (4000자 이내)
-Transforme seu celular em um alarme de movimento de bolso.
-O Motion Alarm Pocket toca sirene e vibra quando seu celular ou bolsa é movido.
+Alarme de movimento e um utilitario Android para uma sessao local iniciada pelo usuario.
 
-Como funciona
-• Defina um pequeno atraso antes de armar
-• Escolha sensibilidade baixa, média ou alta
-• Toque em Iniciar e deixe o celular parado
+🔎 O que voce pode fazer
+• Sessao com acelerometro armada apos atraso visivel
+• Sensibilidade baixa, media e alta
+• Previa de sirene ou bip antes de usar
+• Historico local recente apos as sessoes
 
-Alertas claros
-• Sirene e vibração quando movimento é detectado
-• Pare o alarme com um toque
-• Histórico local das detecções recentes
+🔒 Privacidade e limites
+• A deteccao de movimento e local e depende do acelerometro; nao garante seguranca.
+• Sinais de hardware variam por aparelho, qualidade do sensor, estado do sistema e ambiente.
+• O app nao garante seguranca, recuperacao, deteccao, entrega ou resposta de emergencia.
 
-Privado e no dispositivo
-• Usa o sensor de movimento do aparelho
-• Sem conta, localização ou permissões especiais
-• A detecção depende dos sensores e do ambiente, portanto não é garantida
-
-Premium é opcional. Remova anúncios com uma compra única de apoio. Não é assinatura.
-
-Política de privacidade: https://dangundad.github.io/privacy/motion-alarm-pocket
+Use como uma ferramenta local pratica, com controles claros e limites honestos.
 
 ---
 
 ### 9. 인도네시아어 (id)
 
 #### 앱 제목 (30자 이내)
-Motion Alarm Pocket - Jaga
+Alarm Gerak Saku
 
-#### 앱 간략한 설명 (60자 이내)
-Alarm gerak untuk ponsel di saku atau tas Anda.
+#### 앱 간략한 설명 (80자 이내)
+Alarm gerak dengan jeda mulai dan sensitivitas.
 
 #### 앱 설명 (4000자 이내)
-Ubah ponsel Anda menjadi alarm gerak saku.
-Motion Alarm Pocket membunyikan sirene dan getaran saat ponsel atau tas Anda bergerak.
+Alarm Gerak Saku adalah utilitas Android untuk sesi lokal yang dimulai pengguna.
 
-Cara kerja
-• Atur jeda singkat sebelum aktif
-• Pilih sensitivitas rendah, sedang, atau tinggi
-• Ketuk Mulai dan biarkan ponsel tetap diam
+🔎 Yang bisa dilakukan
+• Sesi akselerometer aktif setelah jeda mulai yang terlihat
+• Pilihan sensitivitas rendah, sedang, dan tinggi
+• Pratinjau sirene atau bip sebelum dipakai
+• Riwayat lokal terbaru setelah sesi alarm
 
-Alarm yang jelas
-• Sirene dan getaran saat gerakan terdeteksi
-• Hentikan alarm sendiri dengan satu ketukan
-• Riwayat lokal untuk deteksi terbaru
+🔒 Privasi dan batasan
+• Deteksi gerak bersifat lokal dan bergantung pada akselerometer; bukan jaminan keamanan.
+• Sinyal hardware dapat berubah menurut perangkat, kualitas sensor, status OS, dan lingkungan.
+• Aplikasi tidak menjamin keamanan, pemulihan, deteksi, pengiriman, atau respons darurat.
 
-Privat dan di perangkat
-• Menggunakan sensor gerak perangkat
-• Tanpa akun, lokasi, atau izin khusus
-• Deteksi bergantung pada sensor dan lingkungan, sehingga tidak dijamin
-
-Premium bersifat opsional. Hapus iklan dengan pembelian dukungan satu kali. Bukan langganan.
-
-Kebijakan privasi: https://dangundad.github.io/privacy/motion-alarm-pocket
+Gunakan sebagai alat lokal praktis dengan kontrol jelas dan batasan yang jujur.
 
 ---
 
-### 10. 중국어 (zh-CN)
+### 10. 중국어 (zh)
 
 #### 앱 제목 (30자 이내)
-口袋移动警报 - 守护
+口袋移动警报
 
-#### 앱 간략한 설명 (60자 이내)
-为口袋或包里的手机提供移动警报。
+#### 앱 간략한 설명 (80자 이내)
+可设置延迟和灵敏度的口袋移动警报。
 
 #### 앱 설명 (4000자 이내)
-把手机变成口袋移动警报。
-当手机或包被移动时，Motion Alarm Pocket 会播放警笛并振动提醒。
+口袋移动警报 是一款由用户主动启动本地会话的 Android 工具。
 
-使用方法
-• 设置启动前的短暂延迟
-• 选择低、中、高灵敏度
-• 点击开始，然后保持手机静止
+🔎 你可以做什么
+• 带可见启动延迟的加速度计警报会话
+• 低、中、高三档灵敏度
+• 使用前预览警笛或蜂鸣声
+• 警报会话后的本地最近记录
 
-清晰警报
-• 检测到移动时警笛加振动
-• 一次点击即可自行停止警报
-• 在本地查看最近检测历史
+🔒 隐私和限制
+• 移动检测在本地进行并依赖设备加速度计，并不保证安全。
+• 硬件信号会受设备、传感器质量、系统状态和环境影响。
+• 它不保证安全、找回、检测、送达或紧急响应。
 
-设备端处理与隐私
-• 使用设备的移动传感器
-• 无需账号、位置或特殊权限
-• 检测取决于设备传感器和环境，无法保证
-
-高级版为可选。通过一次性支持购买移除广告。不是订阅。
-
-隐私政策: https://dangundad.github.io/privacy/motion-alarm-pocket
+请把它作为一款操作清晰、限制透明的本地实用工具。
 
 ---
 
@@ -342,44 +263,21 @@ Kebijakan privasi: https://dangundad.github.io/privacy/motion-alarm-pocket
 #### 앱 제목 (30자 이내)
 منبه حركة الجيب
 
-#### 앱 간략한 설명 (60자 이내)
-منبه حركة لهاتفك داخل الجيب أو الحقيبة.
+#### 앱 간략한 설명 (80자 이내)
+منبه حركة مع تأخير وحساسية قابلة للضبط.
 
 #### 앱 설명 (4000자 이내)
-حوّل هاتفك إلى منبه حركة للجيب.
-يشغّل Motion Alarm Pocket صفارة واهتزازًا عندما يتحرك هاتفك أو حقيبتك.
+منبه حركة الجيب أداة Android لجلسة محلية يبدأها المستخدم.
 
-طريقة العمل
-• اضبط تأخيرًا قصيرًا قبل التفعيل
-• اختر حساسية منخفضة أو متوسطة أو عالية
-• اضغط بدء واترك الهاتف ثابتًا
+🔎 ما يمكنك فعله
+• جلسة مستشعر حركة تعمل بعد تأخير بدء واضح
+• خيارات حساسية منخفضة ومتوسطة وعالية
+• معاينة صوت صفارة أو تنبيه قبل الاستخدام
+• سجل محلي حديث بعد جلسات التنبيه
 
-تنبيهات واضحة
-• صفارة واهتزاز عند اكتشاف الحركة
-• أوقف التنبيه بنفسك بنقرة واحدة
-• سجل محلي لآخر الاكتشافات
+🔒 الخصوصية والحدود
+• اكتشاف الحركة محلي ويعتمد على مستشعر التسارع؛ ولا يضمن الأمان.
+• قد تختلف إشارات العتاد حسب الجهاز وجودة المستشعر وحالة النظام والبيئة.
+• لا يضمن التطبيق الأمان أو الاسترداد أو الكشف أو التسليم أو الاستجابة الطارئة.
 
-خصوصية ومعالجة على الجهاز
-• يستخدم مستشعر الحركة في جهازك
-• لا يتطلب حسابًا أو موقعًا أو أذونات خاصة
-• يعتمد الاكتشاف على مستشعرات الجهاز والبيئة، لذلك لا يكون مضمونًا
-
-بريميوم اختياري. أزل الإعلانات بشراء دعم لمرة واحدة. ليس اشتراكًا.
-
-سياسة الخصوصية: https://dangundad.github.io/privacy/motion-alarm-pocket
-
----
-
-## Google Play Console 로케일 메모
-
-- 앱 내부 지원 로케일: `en`, `ko`, `ja`, `de`, `ru`, `fr`, `es`, `pt`, `id`, `zh`, `ar`.
-- Play Console store listing에서 지역 코드가 필요한 언어가 있다. 매핑은 `en-US`, `ko-KR`, `ja-JP`, `de-DE`, `ru-RU`, `fr-FR`, `zh-CN`이며, `es`/`pt`는 타깃에 따라 `es-ES`/`es-419`, `pt-BR`/`pt-PT` 분리를 검토한다.
-- 출시 전 Play Console preview에서 제목 30자, 간단한 설명 60자, 전체 설명 4000자 제한을 다시 확인한다.
-- 번역 품질은 출시 전 원어민 검수를 권장한다. 특히 `ar`(RTL)는 표현과 방향을 재검수한다.
-
-## 금지 표현 점검 기준
-
-- `100% 감지`, `완벽한 보안`, `절대 안전`, `guaranteed detection`, `never fails` 같은 감지·보안 보장 표현을 쓰지 않는다.
-- 전문 보안 장비, 도난 방지 보장, 긴급 대응 기능으로 오인될 표현을 쓰지 않는다.
-- 움직임 감지는 기기 센서와 환경에 따라 달라질 수 있음을 정직하게 표현한다.
-- 앱이 실제로 제공하지 않는 기능(클라우드 동기화, 원격 알림, 위치 추적, 카메라 감시)을 넣지 않는다.
+استخدمه كأداة محلية عملية مع عناصر تحكم واضحة وحدود صريحة.
