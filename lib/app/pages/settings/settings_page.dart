@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../controllers/settings_controller.dart';
 import '../../domain/motion_alarm_logic.dart';
+import '../../routes/app_pages.dart';
 import '../../services/purchase_service.dart';
 
 class SettingsPage extends GetView<SettingsController> {
@@ -26,10 +27,9 @@ class SettingsPage extends GetView<SettingsController> {
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             children: [
-              if (locked) ...[
-                _LockedBanner(),
-                SizedBox(height: 12.h),
-              ],
+              if (locked) ...[_LockedBanner(), SizedBox(height: 12.h)],
+              _PremiumEntryCard(isPremium: PurchaseService.premiumActive),
+              SizedBox(height: 12.h),
               _SectionCard(
                 title: 'detection_section'.tr,
                 icon: LucideIcons.radar,
@@ -60,19 +60,24 @@ class SettingsPage extends GetView<SettingsController> {
                   ),
                   SizedBox(height: 8.h),
                   Divider(
-                      height: 1,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outlineVariant
-                          .withAlpha(120)),
+                    height: 1,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outlineVariant.withAlpha(120),
+                  ),
                   SizedBox(height: 4.h),
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    secondary: Icon(LucideIcons.vibrate,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    secondary: Icon(
+                      LucideIcons.vibrate,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                     title: Text('haptics'.tr),
-                    subtitle: Text('haptics_desc'.tr,
-                        maxLines: 2, overflow: TextOverflow.ellipsis),
+                    subtitle: Text(
+                      'haptics_desc'.tr,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     value: controller.hapticsEnabled.value,
                     onChanged: controller.setHaptics,
                   ),
@@ -87,25 +92,36 @@ class SettingsPage extends GetView<SettingsController> {
                     if (PurchaseService.premiumActive) {
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: Icon(LucideIcons.shieldCheck,
-                            color: Theme.of(context).colorScheme.tertiary),
-                        title: Text('premium_unlocked'.tr,
-                            maxLines: 1, overflow: TextOverflow.ellipsis),
+                        leading: Icon(
+                          LucideIcons.shieldCheck,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                        title: Text(
+                          'premium_unlocked'.tr,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     }
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(LucideIcons.rotateCcw),
-                      title: Text('premium_restore'.tr,
-                          maxLines: 1, overflow: TextOverflow.ellipsis),
+                      title: Text(
+                        'premium_restore'.tr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       onTap: PurchaseService.to.restorePurchases,
                     );
                   }),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(LucideIcons.tag),
-                    title: Text('version'.tr,
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                    title: Text(
+                      'version'.tr,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     trailing: const Text('1.0.0'),
                   ),
                   Padding(
@@ -113,9 +129,8 @@ class SettingsPage extends GetView<SettingsController> {
                     child: Text(
                       'policy_note'.tr,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -126,6 +141,79 @@ class SettingsPage extends GetView<SettingsController> {
             ],
           );
         }),
+      ),
+    );
+  }
+}
+
+class _PremiumEntryCard extends StatelessWidget {
+  const _PremiumEntryCard({required this.isPremium});
+
+  final bool isPremium;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Card(
+      child: InkWell(
+        key: const ValueKey('settings_premium_entry'),
+        onTap: isPremium ? null : () => Get.toNamed(Routes.premium),
+        borderRadius: BorderRadius.circular(12.r),
+        child: Padding(
+          padding: EdgeInsets.all(16.r),
+          child: Row(
+            children: [
+              Container(
+                width: 42.r,
+                height: 42.r,
+                decoration: BoxDecoration(
+                  color: cs.primary.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+                child: Icon(LucideIcons.crown, size: 21.r, color: cs.primary),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isPremium ? 'premium_unlocked'.tr : 'premium_title'.tr,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      isPremium ? 'premium_unlocked'.tr : 'premium_subtitle'.tr,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: cs.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!isPremium) ...[
+                SizedBox(width: 8.w),
+                Text(
+                  'premium_purchase'.tr,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: cs.primary,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Icon(LucideIcons.chevronRight, size: 18.r, color: cs.primary),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -148,9 +236,9 @@ class _LockedBanner extends StatelessWidget {
           Expanded(
             child: Text(
               'settings_locked'.tr,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: cs.onSecondaryContainer,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: cs.onSecondaryContainer),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -211,13 +299,15 @@ class _DelayControl extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('delay_label'.trParams({'n': '$delaySeconds'}),
-            style: Theme.of(context).textTheme.bodyLarge),
+        Text(
+          'delay_label'.trParams({'n': '$delaySeconds'}),
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         Text(
           'delay_desc'.tr,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
@@ -260,8 +350,7 @@ class _SensitivityControl extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('sensitivity'.tr,
-            style: Theme.of(context).textTheme.bodyLarge),
+        Text('sensitivity'.tr, style: Theme.of(context).textTheme.bodyLarge),
         SizedBox(height: 8.h),
         SizedBox(
           width: double.infinity,
@@ -281,8 +370,7 @@ class _SensitivityControl extends StatelessWidget {
               ),
             ],
             selected: {sensitivity},
-            onSelectionChanged:
-                enabled ? (s) => onChanged(s.first) : null,
+            onSelectionChanged: enabled ? (s) => onChanged(s.first) : null,
           ),
         ),
         SizedBox(height: 8.h),
@@ -290,8 +378,8 @@ class _SensitivityControl extends StatelessWidget {
         Text(
           _explanation(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
@@ -317,8 +405,7 @@ class _SoundControl extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('alarm_sound'.tr,
-            style: Theme.of(context).textTheme.bodyLarge),
+        Text('alarm_sound'.tr, style: Theme.of(context).textTheme.bodyLarge),
         SizedBox(height: 8.h),
         SizedBox(
           width: double.infinity,
@@ -343,8 +430,11 @@ class _SoundControl extends StatelessWidget {
         OutlinedButton.icon(
           onPressed: () => onTest(),
           icon: Icon(LucideIcons.play, size: 18.r),
-          label: Text('test_alarm'.tr,
-              maxLines: 1, overflow: TextOverflow.ellipsis),
+          label: Text(
+            'test_alarm'.tr,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           style: OutlinedButton.styleFrom(
             minimumSize: Size(double.infinity, 46.h),
           ),

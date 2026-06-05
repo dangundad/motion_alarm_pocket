@@ -28,14 +28,14 @@ const _tiers = [
     emoji: '☕',
     titleKey: 'premium_option_small_title',
     descKey: 'premium_option_small_desc',
-    usdFallback: r'$0.99',
+    usdFallback: r'$2.99',
   ),
   _TierMeta(
     id: 'motion_alarm_pocket_premium_medium',
     emoji: '🛡️',
     titleKey: 'premium_option_medium_title',
     descKey: 'premium_option_medium_desc',
-    usdFallback: r'$2.99',
+    usdFallback: r'$5.99',
     popular: true,
   ),
   _TierMeta(
@@ -43,15 +43,31 @@ const _tiers = [
     emoji: '💪',
     titleKey: 'premium_option_large_title',
     descKey: 'premium_option_large_desc',
-    usdFallback: r'$4.99',
+    usdFallback: r'$9.99',
   ),
 ];
 
 const _benefits = [
-  (icon: LucideIcons.tvMinimalPlay, titleKey: 'premium_benefit_no_ads',     descKey: 'premium_benefit_no_ads_desc'),
-  (icon: LucideIcons.infinity,      titleKey: 'premium_benefit_lifetime',   descKey: 'premium_benefit_lifetime_desc'),
-  (icon: LucideIcons.heart,         titleKey: 'premium_benefit_support',    descKey: 'premium_benefit_support_desc'),
-  (icon: LucideIcons.shieldCheck,   titleKey: 'premium_benefit_peace',      descKey: 'premium_benefit_peace_desc'),
+  (
+    icon: LucideIcons.tvMinimalPlay,
+    titleKey: 'premium_benefit_no_ads',
+    descKey: 'premium_benefit_no_ads_desc',
+  ),
+  (
+    icon: LucideIcons.infinity,
+    titleKey: 'premium_benefit_lifetime',
+    descKey: 'premium_benefit_lifetime_desc',
+  ),
+  (
+    icon: LucideIcons.heart,
+    titleKey: 'premium_benefit_support',
+    descKey: 'premium_benefit_support_desc',
+  ),
+  (
+    icon: LucideIcons.shieldCheck,
+    titleKey: 'premium_benefit_peace',
+    descKey: 'premium_benefit_peace_desc',
+  ),
 ];
 
 class PremiumPage extends StatefulWidget {
@@ -62,7 +78,7 @@ class PremiumPage extends StatefulWidget {
 }
 
 class _PremiumPageState extends State<PremiumPage> {
-  int _selectedIndex = 1; // Medium이 기본 선택 (Popular)
+  int _selectedIndex = 0; // 낮은 진입 가격인 Small을 기본 선택
 
   PurchaseService get _svc => PurchaseService.to;
 
@@ -186,9 +202,9 @@ class _Header extends StatelessWidget {
         SizedBox(height: 6.h),
         Text(
           'premium_subtitle'.tr,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: cs.onSurfaceVariant,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
@@ -205,14 +221,18 @@ class _Header extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(LucideIcons.check, size: 13.r, color: cs.onSecondaryContainer),
+                Icon(
+                  LucideIcons.check,
+                  size: 13.r,
+                  color: cs.onSecondaryContainer,
+                ),
                 SizedBox(width: 4.w),
                 Text(
                   'premium_one_time_note'.tr,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: cs.onSecondaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: cs.onSecondaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -238,7 +258,11 @@ class _PremiumUnlockedCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(LucideIcons.shieldCheck, size: 32.r, color: cs.onTertiaryContainer),
+          Icon(
+            LucideIcons.shieldCheck,
+            size: 32.r,
+            color: cs.onTertiaryContainer,
+          ),
           SizedBox(width: 14.w),
           Expanded(
             child: Column(
@@ -247,16 +271,16 @@ class _PremiumUnlockedCard extends StatelessWidget {
                 Text(
                   'premium_unlocked'.tr,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: cs.onTertiaryContainer,
-                      ),
+                    color: cs.onTertiaryContainer,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   'premium_one_time_note'.tr,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: cs.onTertiaryContainer.withAlpha(180),
-                      ),
+                    color: cs.onTertiaryContainer.withAlpha(180),
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -321,7 +345,11 @@ class _TierCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: selected
-                          ? Icon(LucideIcons.check, size: 20.r, color: cs.onPrimary)
+                          ? Icon(
+                              LucideIcons.check,
+                              size: 20.r,
+                              color: cs.onPrimary,
+                            )
                           : Text(tier.emoji, style: TextStyle(fontSize: 18.sp)),
                     ),
                   ),
@@ -332,17 +360,19 @@ class _TierCard extends StatelessWidget {
                       children: [
                         Text(
                           tier.titleKey.tr,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: selected
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
                               ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           tier.descKey.tr,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: cs.onSurfaceVariant,
-                              ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: cs.onSurfaceVariant),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -353,9 +383,9 @@ class _TierCard extends StatelessWidget {
                   Text(
                     price,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: selected ? cs.primary : cs.onSurface,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: selected ? cs.primary : cs.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -405,9 +435,9 @@ class _BenefitsList extends StatelessWidget {
       children: [
         Text(
           'premium_benefits_title'.tr,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: cs.onSurfaceVariant,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(color: cs.onSurfaceVariant),
         ),
         SizedBox(height: 10.h),
         Container(
@@ -468,9 +498,9 @@ class _BenefitRow extends StatelessWidget {
                 ),
                 Text(
                   benefit.descKey.tr,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: cs.onSurfaceVariant,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -568,7 +598,8 @@ class _BottomPurchaseBar extends StatelessWidget {
               style: FilledButton.styleFrom(
                 minimumSize: Size(double.infinity, 56.h),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.r)),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
                 backgroundColor: isPremium ? cs.tertiary : null,
               ),
               child: content,
@@ -578,9 +609,9 @@ class _BottomPurchaseBar extends StatelessWidget {
               SizedBox(height: 6.h),
               Text(
                 'premium_one_time_note'.tr,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: cs.onSurfaceVariant,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant),
                 textAlign: TextAlign.center,
               ),
             ],
