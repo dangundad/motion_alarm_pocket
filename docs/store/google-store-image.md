@@ -74,7 +74,7 @@
 - Title(EN) 후보: **Remove Ads Support**
 
 **캡처 화면**
-- premium page: 3단 일회성 후원
+- settings premium entry -> premium page: 3단 일회성 후원
 - 실제 앱 화면과 현재 구현된 기능만 사용한다.
 - 과장된 보안, 실제 탐지 보장, 실제 통신/시스템 경고 모방 문구를 넣지 않는다.
 

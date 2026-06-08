@@ -1,6 +1,6 @@
 # Motion Alarm Pocket - Guard - Play Review Notes
 
-> 최신화: 2026-06-04
+> 최신화: 2026-06-05
 > 패키지명: com.dangundad.motion.alarm.pocket
 > 목적: Google Play Console의 메타데이터, 광고, 결제, 권한, Data safety 검토 대응
 
@@ -80,7 +80,7 @@ The app does not guarantee security, recovery, emergency response, real phone ne
 3. 감시 중 - armed 상태 - armed.png: start delay 이후 armed 상태
 4. 경보와 해제 - alarm active와 stop/disarm 조작 흐름
 5. 사운드와 감도 설정 - settings: siren/beep, Low/Med/High
-6. Premium - 광고 제거 후원 - premium page: 3단 일회성 후원
+6. Premium - 광고 제거 후원 - settings premium entry -> premium page: 3단 일회성 후원
 
 ## 메타데이터 작성 규칙
 
