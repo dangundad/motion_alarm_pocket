@@ -145,20 +145,27 @@ class HomeController extends GetxController {
     // isArmed only ever flips false→true within a session (time is monotonic
     // and the delay is locked while running), so stop recomputing once armed.
     if (!isArmed.value) {
-      isArmed.value = MotionAlarmLogic.isArmed(
+      final nowArmed = MotionAlarmLogic.isArmed(
         startedAt: startedAt,
         now: DateTime.now(),
         delay: Duration(seconds: delaySeconds.value),
       );
-      if (isArmed.value) {
+      // While still arming, keep tracking the latest sample as the baseline.
+      // On the tick that arms, reset the baseline to this sample and skip the
+      // trigger check this cycle so residual placement movement from the
+      // arming window can't fire the alarm the instant it goes live.
+      _lastSample = sample;
+      if (nowArmed) {
+        isArmed.value = true;
         armingProgress.value = 1.0;
         _armingTicker?.cancel();
         _armingTicker = null;
       }
+      return;
     }
     final previous = _lastSample;
     _lastSample = sample;
-    if (previous == null || !isArmed.value || isAlarmActive.value) return;
+    if (previous == null || isAlarmActive.value) return;
     final delta = MotionAlarmLogic.delta(previous, sample);
     lastDelta.value = delta;
     if (MotionAlarmLogic.shouldTrigger(
