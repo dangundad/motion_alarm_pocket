@@ -18,6 +18,12 @@ class AlertService extends GetxService {
   final AudioPlayer _player = AudioPlayer();
   Timer? _vibrationTimer;
 
+  // Bumped whenever playback intent changes (alarm start, stop, or a new
+  // preview). The preview's delayed auto-stop captures the token at schedule
+  // time and only stops if it still owns the player — so a real alarm that
+  // begins during a preview window can never be silenced by the stale timer.
+  int _playbackToken = 0;
+
   /// Starts the alarm with [sound]. Audio loops at full volume regardless of
   /// the media volume slider; vibration runs alongside unless [vibrate] is off.
   Future<void> start({
@@ -26,6 +32,7 @@ class AlertService extends GetxService {
   }) async {
     if (isActive.value) return;
     isActive.value = true;
+    _playbackToken++;
     final audioStarted = await _playLoop(sound);
     // If audio failed (no codec, locked output), vibration is the only signal
     // left, so force it on regardless of the caller's preference.
@@ -39,6 +46,7 @@ class AlertService extends GetxService {
     Duration duration = const Duration(seconds: 2),
   }) async {
     if (isActive.value) return;
+    final token = ++_playbackToken;
     try {
       await _player.stop();
       await _player.setReleaseMode(ReleaseMode.stop);
@@ -49,6 +57,9 @@ class AlertService extends GetxService {
       return;
     }
     Future<void>.delayed(duration, () async {
+      // A real alarm (or a newer preview) bumps the token; only stop if this
+      // preview still owns the player.
+      if (token != _playbackToken) return;
       try {
         await _player.stop();
       } catch (_) {}
@@ -84,6 +95,7 @@ class AlertService extends GetxService {
 
   Future<void> stop() async {
     isActive.value = false;
+    _playbackToken++;
     _vibrationTimer?.cancel();
     _vibrationTimer = null;
     try {
